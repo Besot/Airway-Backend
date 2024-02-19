@@ -11,9 +11,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.chielokacode.airwaycc.airwaybackendcc.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 
 @Data
@@ -69,7 +72,7 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority(this.userRole.name())));
     }
 
     @Override
