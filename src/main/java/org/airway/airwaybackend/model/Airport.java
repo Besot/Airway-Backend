@@ -1,6 +1,7 @@
 package org.airway.airwaybackend.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
@@ -26,9 +27,10 @@ public class Airport {
     private String operationalHrs;
     private String state;
 
-    @ManyToMany(mappedBy = "airports")
+    @ManyToMany(mappedBy = "airports", fetch = FetchType.EAGER)
     private Set<Airline> airlines;
 
 
-
+    public Airport(String value, String value1, String value2, String value3, String value4, String value5) {
+    }
 }

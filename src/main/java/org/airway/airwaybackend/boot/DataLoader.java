@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Transactional
@@ -31,6 +33,12 @@ public class DataLoader {
 
     @Autowired
     private AirlineRepository airlineRepository;
+
+    private static final List<String> airlineNames = Arrays.asList("Air Peace", "Arik Air", "Dana Air", "Med-View Airline",
+            "Overland Airways", "Azman Air", "Max Air", "Ibom Air", "Aero Contractors", "Green Africa Airways",
+            "Chanchangi Airlines", "First Nation Airways", "Kabo Air", "Allied Air", "Bristow Helicopters Nigeria",
+            "Dornier Aviation Nigeria", "Discovery Air", "SkyJet Aviation Services", "TopBrass Aviation",
+            "OAS Helicopters");
 
     @Bean
     CommandLineRunner loadAirportsAndAirlines() {
@@ -46,7 +54,13 @@ public class DataLoader {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",");
-                Airport airport = new Airport(values[0], values[1], values[2], values[3], values[4], values[5]);
+                Airport airport = new Airport();
+                airport.setIataCode(values[0]); // Manually assign the iataCode
+                airport.setName(values[1]);
+                airport.setIcaoCode(values[2]);
+                airport.setCity(values[3]);
+                airport.setOperationalHrs(values[4]);
+                airport.setState(values[5]);
                 airportRepository.save(airport);
             }
         } catch (IOException e) {
@@ -55,15 +69,13 @@ public class DataLoader {
     }
 
     private void loadAirlines() {
-        List<String> airlineNames = Arrays.asList("Air Peace", "Arik Air", "Dana Air", "Med-View Airline",
-                "Overland Airways", "Azman Air", "Max Air", "Ibom Air", "Aero Contractors", "Green Africa Airways",
-                "Chanchangi Airlines", "First Nation Airways", "Kabo Air", "Allied Air", "Bristow Helicopters Nigeria",
-                "Dornier Aviation Nigeria", "Discovery Air", "SkyJet Aviation Services", "TopBrass Aviation",
-                "OAS Helicopters");
-
         airlineNames.forEach(name -> {
             Airline airline = new Airline();
             airline.setName(name);
+
+            Set<Airport> airports = new HashSet<>(airportRepository.findAll());
+            airline.setAirports(airports);
+
             airlineRepository.save(airline);
         });
     }

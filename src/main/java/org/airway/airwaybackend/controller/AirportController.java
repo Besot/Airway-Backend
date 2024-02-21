@@ -27,4 +27,5 @@ public class AirportController {
     public @ResponseBody Airport getAirportById(@PathVariable("iata-code") String iataCode) {
         return airportService.getAirportById(iataCode);
     }
+
 }
