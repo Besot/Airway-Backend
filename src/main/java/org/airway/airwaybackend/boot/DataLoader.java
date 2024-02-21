@@ -55,7 +55,7 @@ public class DataLoader {
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",");
                 Airport airport = new Airport();
-                airport.setIataCode(values[0]); // Manually assign the iataCode
+                airport.setIataCode(values[0]);
                 airport.setName(values[1]);
                 airport.setIcaoCode(values[2]);
                 airport.setCity(values[3]);
