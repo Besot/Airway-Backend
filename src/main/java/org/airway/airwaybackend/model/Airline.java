@@ -1,13 +1,12 @@
 package org.airway.airwaybackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -19,4 +18,11 @@ public class Airline {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @ManyToMany
+    @JoinTable(
+            name = "airline_airport",
+            joinColumns = @JoinColumn(name = "airline_id"),
+            inverseJoinColumns = @JoinColumn(name = "airport_iata_code")
+    )
+    private Set<Airport> airports;
 }
