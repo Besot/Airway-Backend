@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.chielokaCode.airwaycc</groupId>
-    <artifactId>Airway-Backend-CC</artifactId>
+    <artifactId>Airway-Backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Airway-Backend-CC</name>
     <description>Airway-Backend-CC</description>
