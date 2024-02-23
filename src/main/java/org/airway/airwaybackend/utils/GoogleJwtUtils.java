@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.function.Function;
 
@@ -67,18 +68,13 @@ public class GoogleJwtUtils {
             Payload payload = idToken.getPayload();
             String userId = payload.getSubject();
             System.out.println("User ID: " + userId);
-
-
             String email = payload.getEmail();
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
-            if(userRepository.existsByEmail(email)){
-                throw new RuntimeException("User already has an account, pls login");
-            }
             return SignupDto
                     .builder()
-                    .firstName((givenName == null) ? "NoFirstName" : givenName)
-                    .lastName((familyName == null) ? "NoLastName" : familyName)
+                    .firstName(givenName)
+                    .lastName(familyName)
                     .email(email)
                     .phoneNumber("00000000000")
                     .password("Airways24")
@@ -100,6 +96,12 @@ public class GoogleJwtUtils {
             User user = new ObjectMapper().convertValue(userDto, User.class);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setUserRole(Role.PASSENGER);
+            user.setDateOfBirth(LocalDate.now().toString());
+            user.setGender("NA");
+            user.setMembershipNo("NA");
+            user.setPassportNumber("NA");
+            user.setState("NA");
+            user.setCountry("NA");
             user = userRepository.save(user);
             return utils.createJwt.apply(userService.loadUserByUsername(user.getUsername()));
         }

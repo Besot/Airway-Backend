@@ -62,11 +62,17 @@ public class User implements UserDetails {
     @JsonIgnore
     private Boolean isEnabled = false;
 
+    @JsonIgnore
     private String gender;
+    @JsonIgnore
     private String dateOfBirth;
+    @JsonIgnore
     private String state;
+    @JsonIgnore
     private String country;
+    @JsonIgnore
     private String passportNumber;
+    @JsonIgnore
     private String membershipNo;
 
     @Override
