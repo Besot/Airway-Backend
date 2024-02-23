@@ -4,13 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="CiCd pipeline third attempt">
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/chielokacode/airwaycc/airwaybackendcc/AirwayBackendCcApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/chielokacode/airwaycc/airwaybackendcc/AirwayBackendCcApplicationTests.java" afterDir="false" />
+    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="adds setup security feature">
+      <change afterPath="$PROJECT_DIR$/env.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/serviceImpl/UserServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AirportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/utils/GoogleJwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/utils/GoogleJwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -20,12 +40,15 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2ce1Uqapr37Vt1cE5HhSN0XqzEx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -34,22 +57,106 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.AuthControllerTest.authorizeOauthUser.executor": "Run",
+    "JUnit.AuthControllerTest.executor": "Run",
+    "JUnit.UserServiceImplTest.executor": "Run",
     "Maven.Airway-Backend-CC [clean].executor": "Run",
     "Maven.Airway-Backend-CC [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.AirwayBackendApplication.executor": "Run",
     "Spring Boot.AirwayBackendCcApplication.executor": "Run",
-    "git-widget-placeholder": "CICD",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers": "true",
+    "git-widget-placeholder": "setup-security-feature",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/decagon/IdeaProjects/Airway-API/src/main/java/org/airway/airwaybackend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.airway.airwaybackend.serviceImpl" />
+      <recent name="org.airway.airwaybackend.controller" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.airway.airwaybackend.exception" />
+      <recent name="org.airway.airwaybackend.utils" />
+      <recent name="org.airway.airwaybackend.controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AirwayBackendApplication">
+    <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Airway-Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.airway.airwaybackend.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.airway.airwaybackend.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.airway.airwaybackend.controller.AuthControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthControllerTest.authorizeOauthUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Airway-Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.airway.airwaybackend.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.airway.airwaybackend.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.airway.airwaybackend.controller.AuthControllerTest" />
+      <option name="METHOD_NAME" value="authorizeOauthUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Airway-Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.airway.airwaybackend.serviceImpl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.airway.airwaybackend.serviceImpl" />
+      <option name="MAIN_CLASS_NAME" value="org.airway.airwaybackend.serviceImpl.UserServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AirwayBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="Airway-Backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.airway.airwaybackend.AirwayBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AirwayBackendCcApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="Airway-Backend-CC" />
@@ -58,11 +165,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UserServiceImplTest" />
+        <item itemvalue="JUnit.AuthControllerTest" />
+        <item itemvalue="JUnit.AuthControllerTest.authorizeOauthUser" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-a81d5c7c" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-3183f394aec4-74f1fbcb" />
       </set>
     </attachedChunks>
   </component>
@@ -75,6 +189,8 @@
       <option name="presentableId" value="Default" />
       <updated>1708457249574</updated>
       <workItem from="1708457252247" duration="7091000" />
+      <workItem from="1708524796136" duration="22224000" />
+      <workItem from="1708645058355" duration="7303000" />
     </task>
     <task id="LOCAL-00001" summary="CiCd pipeline">
       <option name="closed" value="true" />
@@ -100,7 +216,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708518063887</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="adds setup security feature">
+      <option name="closed" value="true" />
+      <created>1708529030562</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1708529030562</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,6 +245,7 @@
     <MESSAGE value="CiCd pipeline" />
     <MESSAGE value="CiCd pipeline second attempt" />
     <MESSAGE value="CiCd pipeline third attempt" />
-    <option name="LAST_COMMIT_MESSAGE" value="CiCd pipeline third attempt" />
+    <MESSAGE value="adds setup security feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="adds setup security feature" />
   </component>
 </project>
