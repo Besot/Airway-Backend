@@ -23,7 +23,7 @@ public class EmailSenderServiceTest {
     @Test
     public void testSendSimpleEmail() {
         // Test data
-        String toEmail = "goodluckanorue001@gmail.com";
+        String toEmail = "anoruehappiness@gmail.com";
         String body = "Test email body";
         String subject = "Test subject";
 
@@ -34,3 +34,32 @@ public class EmailSenderServiceTest {
         verify(mockMailSender, times(1)).send(any(SimpleMailMessage.class));
     }
 }
+
+/*import org.airway.airwaybackend.serviceImpl.EmailSenderService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.javamail.JavaMailSender;
+
+
+@SpringBootTest
+public class EmailSenderServiceTest {
+
+    @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Test
+    public void testSendSimpleEmail() {
+        String toEmail = "goodluckanorue001@gmail.com";
+        String subject = "Test Subject";
+        String body = "This is a test email body.";
+
+        emailSenderService.sendSimpleEmail(toEmail, body, subject);
+
+        // Optionally, you can add assertions or logging to verify the email was sent.
+    }
+}
+*/
