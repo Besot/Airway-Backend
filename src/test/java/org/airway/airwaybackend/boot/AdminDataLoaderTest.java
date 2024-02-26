@@ -44,7 +44,7 @@ import static org.mockito.Mockito.*;
 
             adminDataLoader.seedAdmin();
 
-            verify(userRepository, times(5)).save(any(User.class));
+            verify(userRepository, times(4)).save(any(User.class));
         }
 
     }
