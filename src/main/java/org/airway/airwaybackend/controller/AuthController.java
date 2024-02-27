@@ -18,7 +18,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        String result = userService.logInUser(loginDto);
+String result = userService.logInUser(loginDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
