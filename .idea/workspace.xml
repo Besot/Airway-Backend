@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="adds setup security feature">
-      <change afterPath="$PROJECT_DIR$/env.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/serviceImpl/UserServiceImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/exception/FlightNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env.properties" beforeDir="false" afterPath="$PROJECT_DIR$/env.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AirportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AirportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/utils/GoogleJwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/utils/GoogleJwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/FlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/FlightController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/service/FlightService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/service/FlightService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/FlightServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/FlightServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -40,9 +35,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -70,10 +65,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.AirwayBackendApplication.executor": "Run",
     "Spring Boot.AirwayBackendCcApplication.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers": "true",
-    "git-widget-placeholder": "setup-security-feature",
+    "git-widget-placeholder": "ft-delete-flight",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/decagon/IdeaProjects/Airway-API/src/main/java/org/airway/airwaybackend",
     "node.js.detected.package.eslint": "true",
@@ -83,6 +79,11 @@
     "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "pProject Default",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -101,6 +102,13 @@
       <recent name="org.airway.airwaybackend.utils" />
       <recent name="org.airway.airwaybackend.controller" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
   </component>
   <component name="RunManager" selected="Spring Boot.AirwayBackendApplication">
     <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
@@ -191,6 +199,7 @@
       <workItem from="1708457252247" duration="7091000" />
       <workItem from="1708524796136" duration="22224000" />
       <workItem from="1708645058355" duration="7303000" />
+      <workItem from="1709019044262" duration="6648000" />
     </task>
     <task id="LOCAL-00001" summary="CiCd pipeline">
       <option name="closed" value="true" />
