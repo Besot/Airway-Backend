@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.config;
 
+import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.serviceImpl.UserServiceImpl;
 import org.airway.airwaybackend.utils.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class WebSecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequests ->
-                        httpRequests
+                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}").hasAuthority(String.valueOf(Role.ADMIN))
                                 .requestMatchers(
                                         "/api/v1/auth/**").permitAll()
                                 .requestMatchers(
