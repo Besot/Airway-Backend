@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -75,7 +76,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
                                 .requestMatchers(
-                                        "/api/v1/auth/**").permitAll()
+                                        "/api/v1/auth/**",
+                                        "/mail/send").permitAll()
                                 .requestMatchers(
                                         "/airports/**").authenticated())
                 .sessionManagement(sessionManagement ->
