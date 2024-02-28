@@ -79,8 +79,7 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Page<Flight> getAllFlights(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Flight> flightPage = flightRepository.findAll(pageable);
-        return flightPage;
+        return flightRepository.findAll(pageable);
     }
     @Override
     public int getTotalNumberOfFlights() {

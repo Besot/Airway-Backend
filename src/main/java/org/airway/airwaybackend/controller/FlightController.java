@@ -47,18 +47,11 @@ public class FlightController {
         return ResponseEntity.ok(availableFlight);
     }
     @GetMapping("/fetch-all-flights")
-    public ResponseEntity<PagedResponse<Flight>> getAllFlights(
+    public ResponseEntity<Page<Flight>> getAllFlights(
             @RequestParam(defaultValue = "0") int pageNo,
             @RequestParam(defaultValue = "5") int pageSize
     ) {
-        Page<Flight> flights = flightService.getAllFlights(pageNo, pageSize);
 
-
-        PagedResponse<Flight> flightPagedResponse = new PagedResponse<>();
-        flightPagedResponse.setPagedList(flights.getContent());
-        flightPagedResponse.setPageNo(pageNo + 1);
-        flightPagedResponse.setPageSize(pageSize);
-        flightPagedResponse.setTotalSize(flightService.getTotalNumberOfFlights());
-        return new ResponseEntity<>(flightPagedResponse, HttpStatus.OK);
+        return new ResponseEntity<>(flightService.getAllFlights(pageNo, pageSize), HttpStatus.OK);
     }
 }
