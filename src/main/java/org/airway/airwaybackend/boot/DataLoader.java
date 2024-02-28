@@ -69,14 +69,17 @@ public class DataLoader {
     }
 
     private void loadAirlines() {
-        airlineNames.forEach(name -> {
-            Airline airline = new Airline();
-            airline.setName(name);
+        List<Airline> airlineList = airlineRepository. findAll();
+        if (airlineList.isEmpty()) {
+            airlineNames.forEach(name -> {
+                Airline airline = new Airline();
+                airline.setName(name);
 
-            Set<Airport> airports = new HashSet<>(airportRepository.findAll());
-            airline.setAirports(airports);
+                Set<Airport> airports = new HashSet<>(airportRepository.findAll());
+                airline.setAirports(airports);
 
-            airlineRepository.save(airline);
-        });
+                airlineRepository.save(airline);
+            });
+        }
     }
 }

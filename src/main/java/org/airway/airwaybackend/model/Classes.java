@@ -18,7 +18,7 @@ public class Classes {
     private Long id;
     private String className;
     private double price;
-    private double baggageAllowance;
+    private String baggageAllowance;
     @Enumerated(EnumType.STRING)
     private FlightStatus flightStatus;
     private double taxFee;
@@ -30,5 +30,4 @@ public class Classes {
     private Flight flight;
     @OneToMany
     private List<Passenger> passengers;
-    // Getters and setters
 }
