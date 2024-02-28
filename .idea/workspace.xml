@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="endpoint to list all flights">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/FlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/FlightController.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +16,7 @@
       <list>
         <option value="JUnit5 Test Class" />
         <option value="Class" />
+
       </list>
     </option>
   </component>
@@ -29,6 +28,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
@@ -46,6 +46,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+
     &quot;JUnit.AuthControllerTest.authorizeOauthUser.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UserServiceImplTest.executor&quot;: &quot;Run&quot;,
@@ -57,13 +58,14 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+
     &quot;Spring Boot.AirwayBackendApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.AirwayBackendCcApplication.executor&quot;: &quot;Run&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ft-listing-all-flights&quot;,
+
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/decagon/IdeaProjects/Airway-API/src/main/java/org/airway/airwaybackend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -136,6 +138,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="EmailSenderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Airway-Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.airway.airwaybackend.serviceImpl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.airway.airwaybackend.serviceImpl" />
+      <option name="MAIN_CLASS_NAME" value="org.airway.airwaybackend.serviceImpl.EmailSenderServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EmailSenderServiceTest.testSendSimpleEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Airway-Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.airway.airwaybackend.serviceImpl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.airway.airwaybackend.serviceImpl" />
+      <option name="MAIN_CLASS_NAME" value="org.airway.airwaybackend.serviceImpl.EmailSenderServiceTest" />
+      <option name="METHOD_NAME" value="testSendSimpleEmail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Airway-Backend" />
       <extension name="coverage">
@@ -169,6 +202,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.EmailSenderServiceTest.testSendSimpleEmail" />
+        <item itemvalue="JUnit.EmailSenderServiceTest" />
         <item itemvalue="JUnit.UserServiceImplTest" />
         <item itemvalue="JUnit.AuthControllerTest" />
         <item itemvalue="JUnit.AuthControllerTest.authorizeOauthUser" />
@@ -193,9 +228,6 @@
       <workItem from="1708457252247" duration="7091000" />
       <workItem from="1708524796136" duration="22224000" />
       <workItem from="1708645058355" duration="7303000" />
-      <workItem from="1709019044262" duration="6648000" />
-      <workItem from="1709111473010" duration="1611000" />
-      <workItem from="1709117135338" duration="901000" />
     </task>
     <task id="LOCAL-00001" summary="CiCd pipeline">
       <option name="closed" value="true" />
@@ -229,15 +261,6 @@
       <option name="project" value="LOCAL" />
       <updated>1708529030562</updated>
     </task>
-    <task id="LOCAL-00005" summary="endpoint to list all flights">
-      <option name="closed" value="true" />
-      <created>1709112838355</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1709112838355</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,7 +282,6 @@
     <MESSAGE value="CiCd pipeline second attempt" />
     <MESSAGE value="CiCd pipeline third attempt" />
     <MESSAGE value="adds setup security feature" />
-    <MESSAGE value="endpoint to list all flights" />
-    <option name="LAST_COMMIT_MESSAGE" value="endpoint to list all flights" />
+
   </component>
 </project>
