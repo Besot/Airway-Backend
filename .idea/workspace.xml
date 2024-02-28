@@ -4,17 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="adds setup security feature">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/MailConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/EmailSenderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/serviceImpl/EmailSenderServiceTest.java" afterDir="false" />
+    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="added the mail sender implementation">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/EmailSenderService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-prod.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/serviceImpl/EmailSenderServiceTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +21,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -36,6 +34,12 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/EmailSenderController.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/EmailServiceImpl.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/serviceImpl/EmailSenderServiceTest.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -83,6 +87,11 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
@@ -102,7 +111,7 @@
       <recent name="org.airway.airwaybackend.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.EmailSenderServiceTest.testSendSimpleEmail">
+  <component name="RunManager" selected="Spring Boot.AirwayBackendApplication">
     <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Airway-Backend" />
       <extension name="coverage">
@@ -225,7 +234,12 @@
       <workItem from="1708524796136" duration="22224000" />
       <workItem from="1708645058355" duration="7303000" />
       <workItem from="1708888647205" duration="729000" />
-      <workItem from="1708889431175" duration="319000" />
+      <workItem from="1708889431175" duration="1514000" />
+      <workItem from="1708906121815" duration="580000" />
+      <workItem from="1708929975397" duration="14821000" />
+      <workItem from="1708999111807" duration="112000" />
+      <workItem from="1708999250105" duration="1091000" />
+      <workItem from="1709019799403" duration="25013000" />
     </task>
     <task id="LOCAL-00001" summary="CiCd pipeline">
       <option name="closed" value="true" />
@@ -259,7 +273,31 @@
       <option name="project" value="LOCAL" />
       <updated>1708529030562</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added the mail sender implementation">
+      <option name="closed" value="true" />
+      <created>1708890116224</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1708890116224</updated>
+    </task>
+    <task id="LOCAL-00006" summary="added the mail sender implementation">
+      <option name="closed" value="true" />
+      <created>1708959374808</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1708959374808</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added the mail sender implementation">
+      <option name="closed" value="true" />
+      <created>1709079564233</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1709079564233</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,6 +319,7 @@
     <MESSAGE value="CiCd pipeline second attempt" />
     <MESSAGE value="CiCd pipeline third attempt" />
     <MESSAGE value="adds setup security feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="adds setup security feature" />
+    <MESSAGE value="added the mail sender implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="added the mail sender implementation" />
   </component>
 </project>

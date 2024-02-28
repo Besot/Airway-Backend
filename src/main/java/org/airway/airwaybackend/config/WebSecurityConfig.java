@@ -76,8 +76,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
                                 .requestMatchers(
-                                        "/api/v1/auth/**",
-                                        "/mail/send").permitAll()
+                                        "/api/v1/auth/**").permitAll()
                                 .requestMatchers(
                                         "/airports/**").authenticated())
                 .sessionManagement(sessionManagement ->

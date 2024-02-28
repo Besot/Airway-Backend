@@ -1,9 +1,9 @@
 package org.airway.airwaybackend.serviceImpl;
 
 import jakarta.mail.internet.MimeMessage;
-import org.airway.airwaybackend.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl {
     @Value("${spring.mail.username}")
     private String fromEmail;
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @Override
     public String sendMail(MultipartFile[] file, String to, String[] cc, String subject, String body) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -34,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
                 );
             }
             javaMailSender.send(mimeMessage);
-            return "mail send";
+            return "Mail sent successfully";
 
         } catch (Exception e) {
             throw new RuntimeException(e);
