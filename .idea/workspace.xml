@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="adds setup security feature">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/exception/FlightNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/apiResponse/PagedResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/env.properties" beforeDir="false" afterPath="$PROJECT_DIR$/env.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" afterDir="false" />
@@ -69,7 +68,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers": "true",
-    "git-widget-placeholder": "ft-delete-flight",
+    "git-widget-placeholder": "ft-listing-all-flights",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/decagon/IdeaProjects/Airway-API/src/main/java/org/airway/airwaybackend",
     "node.js.detected.package.eslint": "true",
@@ -200,6 +199,7 @@
       <workItem from="1708524796136" duration="22224000" />
       <workItem from="1708645058355" duration="7303000" />
       <workItem from="1709019044262" duration="6648000" />
+      <workItem from="1709111473010" duration="935000" />
     </task>
     <task id="LOCAL-00001" summary="CiCd pipeline">
       <option name="closed" value="true" />
