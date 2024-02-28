@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="adds setup security feature">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/exception/FlightNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/exception/GlobalExceptionHandler.java" afterDir="false" />
+    <list default="true" id="7505489b-e6a8-49e9-95f5-70a4c58ee5fe" name="Changes" comment="endpoint to list all flights">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env.properties" beforeDir="false" afterPath="$PROJECT_DIR$/env.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/config/WebSecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/FlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/controller/FlightController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/service/FlightService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/service/FlightService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/FlightServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/serviceImpl/FlightServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,42 +44,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.AuthControllerTest.authorizeOauthUser.executor": "Run",
-    "JUnit.AuthControllerTest.executor": "Run",
-    "JUnit.UserServiceImplTest.executor": "Run",
-    "Maven.Airway-Backend-CC [clean].executor": "Run",
-    "Maven.Airway-Backend-CC [package].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.AirwayBackendApplication.executor": "Run",
-    "Spring Boot.AirwayBackendCcApplication.executor": "Run",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers": "true",
-    "git-widget-placeholder": "ft-delete-flight",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/decagon/IdeaProjects/Airway-API/src/main/java/org/airway/airwaybackend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.AuthControllerTest.authorizeOauthUser.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AuthControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserServiceImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Airway-Backend-CC [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Airway-Backend-CC [package].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AirwayBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AirwayBackendCcApplication.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ft-listing-all-flights&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/decagon/IdeaProjects/Airway-API/src/main/java/org/airway/airwaybackend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend" />
@@ -200,6 +194,8 @@
       <workItem from="1708524796136" duration="22224000" />
       <workItem from="1708645058355" duration="7303000" />
       <workItem from="1709019044262" duration="6648000" />
+      <workItem from="1709111473010" duration="1611000" />
+      <workItem from="1709117135338" duration="901000" />
     </task>
     <task id="LOCAL-00001" summary="CiCd pipeline">
       <option name="closed" value="true" />
@@ -233,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708529030562</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="endpoint to list all flights">
+      <option name="closed" value="true" />
+      <created>1709112838355</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1709112838355</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,6 +259,7 @@
     <MESSAGE value="CiCd pipeline second attempt" />
     <MESSAGE value="CiCd pipeline third attempt" />
     <MESSAGE value="adds setup security feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="adds setup security feature" />
+    <MESSAGE value="endpoint to list all flights" />
+    <option name="LAST_COMMIT_MESSAGE" value="endpoint to list all flights" />
   </component>
 </project>

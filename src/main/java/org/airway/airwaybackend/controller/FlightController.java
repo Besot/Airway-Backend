@@ -1,9 +1,12 @@
 package org.airway.airwaybackend.controller;
 
+import org.airway.airwaybackend.apiResponse.PagedResponse;
 import org.airway.airwaybackend.dto.FlightSearchDto;
 import org.airway.airwaybackend.model.Airport;
+import org.airway.airwaybackend.model.Flight;
 import org.airway.airwaybackend.serviceImpl.FlightServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +45,13 @@ public class FlightController {
     ){
         List<FlightSearchDto> availableFlight = flightService.searchAvailableFlight(departurePort,arrivalPort,departureDate,returnDate,noOfAdult, noOfChildren,noOfInfant);
         return ResponseEntity.ok(availableFlight);
+    }
+    @GetMapping("/fetch-all-flights")
+    public ResponseEntity<Page<Flight>> getAllFlights(
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "5") int pageSize
+    ) {
+
+        return new ResponseEntity<>(flightService.getAllFlights(pageNo, pageSize), HttpStatus.OK);
     }
 }
