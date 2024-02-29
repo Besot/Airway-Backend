@@ -1,6 +1,8 @@
 package org.airway.airwaybackend.serviceImpl;
 
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,5 +32,23 @@ public class EmailServiceImpl  {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String applicationUrl(HttpServletRequest request) {
+        return "http://" +
+                request.getServerName() +
+                ":" +
+                request.getServerPort() +
+                "/api/v1/auth" +
+                request.getContextPath();
+    }
+
+    public String passwordResetTokenMail(User user, String applicationUrl, String token) {
+        String url = applicationUrl +"/resetPassword/" + token;
+        this.sendMail(
+                user.getEmail(),
+                "Click on your Password link to reset your Password: " + url,
+                "Password Reset Code Sent");
+        return url;
     }
 }

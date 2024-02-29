@@ -1,8 +1,12 @@
 package org.airway.airwaybackend.serviceImpl;
 
 import org.airway.airwaybackend.dto.LoginDto;
+import org.airway.airwaybackend.dto.ResetPasswordDto;
+import org.airway.airwaybackend.exception.PasswordsDontMatchException;
 import org.airway.airwaybackend.exception.UserNotVerifiedException;
+import org.airway.airwaybackend.model.PasswordResetToken;
 import org.airway.airwaybackend.model.User;
+import org.airway.airwaybackend.repository.PasswordResetTokenRepository;
 import org.airway.airwaybackend.repository.UserRepository;
 import org.airway.airwaybackend.utils.JwtUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +34,9 @@ class UserServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
     @MockBean
     private JwtUtils jwtUtils;
 
@@ -40,7 +48,7 @@ class UserServiceImplTest {
     @BeforeEach
     public void setup() {
         autoCloseable=  MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository,jwtUtils, passwordEncoder);
+        userService = new UserServiceImpl(userRepository,jwtUtils, passwordEncoder, passwordResetTokenRepository);
     }
     @Test
     void testLoginUser_UsrNotVerified() {
@@ -75,9 +83,11 @@ class UserServiceImplTest {
         UserRepository userRepositoryMock = mock(UserRepository.class);
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
         JwtUtils jwtUtilsMock = mock(JwtUtils.class);
+        PasswordResetTokenRepository passwordResetTokenRepositoryMock = mock(PasswordResetTokenRepository.class);
+
         when(userRepositoryMock.findByEmail(userEmail)).thenReturn(Optional.of(mockUser));
 
-        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock,jwtUtilsMock, passwordEncoderMock);
+        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock,jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock);
 
         // Act
         UserDetails userDetails = userService.loadUserByUsername(userEmail);
@@ -101,8 +111,9 @@ class UserServiceImplTest {
         when(userRepositoryMock.findByEmail(userEmail)).thenReturn(Optional.empty());
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
         JwtUtils jwtUtilsMock = mock(JwtUtils.class);
+        PasswordResetTokenRepository passwordResetTokenRepositoryMock = mock(PasswordResetTokenRepository.class);
 
-        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, jwtUtilsMock, passwordEncoderMock);
+        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock);
 
         // Act and Assert
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(userEmail));
@@ -111,5 +122,56 @@ class UserServiceImplTest {
         verify(userRepositoryMock, times(1)).findByEmail(userEmail);
         // Ensure that no other methods of the mock were called
         verifyNoMoreInteractions(userRepositoryMock);
+    }
+
+    @Test
+    void testChangePassword_PasswordsMatch_SaveUser() {
+        // Arrange
+        User mockUser = new User();
+        String newPassword = "newPassword";
+        String newConfirmPassword = "newPassword";
+
+        // Act
+        userService.changePassword(mockUser, newPassword, newConfirmPassword);
+
+        // Verify
+        verify(userRepository, times(1)).save(mockUser);
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    @Test
+    void testChangePassword_PasswordsMismatch_ThrowsException() {
+        // Arrange
+        User mockUser = new User();
+        String newPassword = "newPassword";
+        String newConfirmPassword = "differentPassword";
+
+        // Act and Assert
+        assertThrows(PasswordsDontMatchException.class, () -> userService.changePassword(mockUser, newPassword, newConfirmPassword));
+
+        // Verify
+        verifyNoInteractions(userRepository);
+    }
+
+    @Test
+    void testGetUserByPasswordReset_ValidToken_ReturnsUser() {
+        // Arrange
+        String token = "validToken";
+        User mockUser = new User();
+        PasswordResetToken mockToken = new PasswordResetToken();
+        mockToken.setUser(mockUser);
+
+        when(passwordResetTokenRepository.findByToken(token)).thenReturn(mockToken);
+
+        // Act
+        Optional<User> result = userService.getUserByPasswordReset(token);
+
+        // Assert
+        assertTrue(result.isPresent());
+        assertEquals(mockUser, result.get());
+
+        // Verify
+        verify(passwordResetTokenRepository, times(1)).findByToken(token);
+        verifyNoMoreInteractions(passwordResetTokenRepository);
     }
 }
