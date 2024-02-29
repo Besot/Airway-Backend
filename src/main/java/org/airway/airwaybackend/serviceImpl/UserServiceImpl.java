@@ -1,5 +1,7 @@
 package org.airway.airwaybackend.serviceImpl;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
 import org.airway.airwaybackend.dto.ResetPasswordDto;
 import org.airway.airwaybackend.exception.PasswordsDontMatchException;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -26,12 +29,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final EmailServiceImpl emailService;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordResetTokenRepository) {
+    public UserServiceImpl(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordResetTokenRepository, EmailServiceImpl emailService) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -70,40 +75,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         passwordResetTokenRepository.save(newlyCreatedPasswordResetToken);
     }
 
-    @Override
-    public String validatePasswordResetToken(String token, ResetPasswordDto passwordDto) {
-        PasswordResetToken passwordResetToken =
-                passwordResetTokenRepository.findByToken(token);
-
-        if (passwordResetToken == null) {
-            return "invalid";
-        }
-
-        User user = passwordResetToken.getUser();
-        Calendar cal = Calendar.getInstance();
-
-        if (passwordResetToken.getExpirationTime().getTime()
-                - cal.getTime().getTime() <= 0) {
-            passwordResetTokenRepository.delete(passwordResetToken);
-            return "expired";
-        }
-        return "valid";
-    }
 
     @Override
-    public void changePassword(User user, String newPassword, String newConfirmPassword) {
+    public String resetPasswordMailSender(EmailSenderDto passwordDto, HttpServletRequest request) {
+        User user = findUserByEmail(passwordDto.getEmail());
+        String url = "";
 
-        if (newPassword.equals(newConfirmPassword)) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-            user.setConfirmPassword(passwordEncoder.encode(newConfirmPassword));
-            userRepository.save(user);
-        } else {
-            throw new PasswordsDontMatchException("Passwords do not Match!");
+        if (user != null){
+            String token = UUID.randomUUID().toString();
+            createPasswordResetTokenForUser(user, token);
+            url =emailService.passwordResetTokenMail(user, emailService.applicationUrl(request), token);
         }
-    }
-
-    @Override
-    public Optional<User> getUserByPasswordReset(String token) {
-        return Optional.ofNullable(passwordResetTokenRepository.findByToken(token).getUser());
+        return url;
     }
 }

@@ -36,6 +36,8 @@ class UserServiceImplTest {
 
     @Mock
     private PasswordResetTokenRepository passwordResetTokenRepository;
+    @Mock
+    private EmailServiceImpl emailService;
 
     @MockBean
     private JwtUtils jwtUtils;
@@ -48,7 +50,7 @@ class UserServiceImplTest {
     @BeforeEach
     public void setup() {
         autoCloseable=  MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository,jwtUtils, passwordEncoder, passwordResetTokenRepository);
+        userService = new UserServiceImpl(userRepository,jwtUtils, passwordEncoder, passwordResetTokenRepository, emailService);
     }
     @Test
     void testLoginUser_UsrNotVerified() {
@@ -83,11 +85,12 @@ class UserServiceImplTest {
         UserRepository userRepositoryMock = mock(UserRepository.class);
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
         JwtUtils jwtUtilsMock = mock(JwtUtils.class);
+        EmailServiceImpl emailServiceMock = mock(EmailServiceImpl.class);
         PasswordResetTokenRepository passwordResetTokenRepositoryMock = mock(PasswordResetTokenRepository.class);
 
         when(userRepositoryMock.findByEmail(userEmail)).thenReturn(Optional.of(mockUser));
 
-        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock,jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock);
+        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock,jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock, emailServiceMock);
 
         // Act
         UserDetails userDetails = userService.loadUserByUsername(userEmail);
@@ -111,9 +114,10 @@ class UserServiceImplTest {
         when(userRepositoryMock.findByEmail(userEmail)).thenReturn(Optional.empty());
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
         JwtUtils jwtUtilsMock = mock(JwtUtils.class);
+        EmailServiceImpl emailServiceMock = mock(EmailServiceImpl.class);
         PasswordResetTokenRepository passwordResetTokenRepositoryMock = mock(PasswordResetTokenRepository.class);
 
-        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock);
+        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock, emailServiceMock);
 
         // Act and Assert
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(userEmail));
@@ -124,54 +128,5 @@ class UserServiceImplTest {
         verifyNoMoreInteractions(userRepositoryMock);
     }
 
-    @Test
-    void testChangePassword_PasswordsMatch_SaveUser() {
-        // Arrange
-        User mockUser = new User();
-        String newPassword = "newPassword";
-        String newConfirmPassword = "newPassword";
-
-        // Act
-        userService.changePassword(mockUser, newPassword, newConfirmPassword);
-
-        // Verify
-        verify(userRepository, times(1)).save(mockUser);
-        verifyNoMoreInteractions(userRepository);
-    }
-
-    @Test
-    void testChangePassword_PasswordsMismatch_ThrowsException() {
-        // Arrange
-        User mockUser = new User();
-        String newPassword = "newPassword";
-        String newConfirmPassword = "differentPassword";
-
-        // Act and Assert
-        assertThrows(PasswordsDontMatchException.class, () -> userService.changePassword(mockUser, newPassword, newConfirmPassword));
-
-        // Verify
-        verifyNoInteractions(userRepository);
-    }
-
-    @Test
-    void testGetUserByPasswordReset_ValidToken_ReturnsUser() {
-        // Arrange
-        String token = "validToken";
-        User mockUser = new User();
-        PasswordResetToken mockToken = new PasswordResetToken();
-        mockToken.setUser(mockUser);
-
-        when(passwordResetTokenRepository.findByToken(token)).thenReturn(mockToken);
-
-        // Act
-        Optional<User> result = userService.getUserByPasswordReset(token);
-
-        // Assert
-        assertTrue(result.isPresent());
-        assertEquals(mockUser, result.get());
-
-        // Verify
-        verify(passwordResetTokenRepository, times(1)).findByToken(token);
-        verifyNoMoreInteractions(passwordResetTokenRepository);
-    }
+    
 }
