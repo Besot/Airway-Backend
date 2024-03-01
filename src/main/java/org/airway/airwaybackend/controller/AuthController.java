@@ -1,7 +1,9 @@
 package org.airway.airwaybackend.controller;
 
 
+import org.airway.airwaybackend.dto.ChangePasswordDto;
 import org.airway.airwaybackend.dto.LoginDto;
+import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,5 +24,14 @@ String result = userService.logInUser(loginDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestBody ChangePasswordDto passwordDto){
+        User user = userService.findUserByEmail(passwordDto.getEmail());
+        if (!userService.checkIfValidOldPassword(user, passwordDto.getOldPassword())){
+            return "Invalid Old Password";
+        }
 
+        userService.changePassword(user, passwordDto.getNewPassword());
+        return "Password Change Successfully";
+    }
 }

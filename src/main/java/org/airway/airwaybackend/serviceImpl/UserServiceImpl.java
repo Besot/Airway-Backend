@@ -2,6 +2,7 @@ package org.airway.airwaybackend.serviceImpl;
 
 import org.airway.airwaybackend.dto.LoginDto;
 import org.airway.airwaybackend.exception.UserNotVerifiedException;
+import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.repository.UserRepository;
 import org.airway.airwaybackend.service.UserService;
 import org.airway.airwaybackend.utils.JwtUtils;
@@ -43,5 +44,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         return jwtUtils.createJwt.apply(user);
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email Not Found"));
+    }
+
+    public boolean checkIfValidOldPassword(User user, String oldPassword) {
+        return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    public void changePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }
