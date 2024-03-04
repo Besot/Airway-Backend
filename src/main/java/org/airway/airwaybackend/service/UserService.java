@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface UserService {
     String logInUser(LoginDto userDto);
     void createPasswordResetTokenForUser(User user, String token);
-    String resetPasswordMailSender(EmailSenderDto passwordDto, HttpServletRequest request);
+    void forgotPassword(EmailSenderDto passwordDto, HttpServletRequest request);
 }

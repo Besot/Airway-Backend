@@ -25,10 +25,10 @@ String result = userService.logInUser(loginDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/resetPasswordMail")
-    public ResponseEntity<String> resetPasswordMail(@RequestBody EmailSenderDto passwordDto, HttpServletRequest request){
-        String url = userService.resetPasswordMailSender(passwordDto, request);
-        return new ResponseEntity<>("Go to your mail to reset your password" + url, HttpStatus.OK);
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody EmailSenderDto passwordDto, HttpServletRequest request){
+        userService.forgotPassword(passwordDto, request);
+        return new ResponseEntity<>("Forgot password email successfully sent", HttpStatus.OK);
 
     }
 

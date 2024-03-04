@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public User findUserByEmail(String username) {
-
         return userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Username Not Found" + username));
     }
     @Override
@@ -70,22 +69,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByUserId(user.getId());
         if(passwordResetToken != null){
             passwordResetTokenRepository.delete(passwordResetToken);
-            passwordResetTokenRepository.save(newlyCreatedPasswordResetToken);
         }
         passwordResetTokenRepository.save(newlyCreatedPasswordResetToken);
     }
 
 
     @Override
-    public String resetPasswordMailSender(EmailSenderDto passwordDto, HttpServletRequest request) {
+    public void forgotPassword(EmailSenderDto passwordDto, HttpServletRequest request) {
         User user = findUserByEmail(passwordDto.getEmail());
-        String url = "";
-
-        if (user != null){
+        if (user == null) {
+            throw new UsernameNotFoundException("User with email " + passwordDto.getEmail() + " not found");
+        }
             String token = UUID.randomUUID().toString();
             createPasswordResetTokenForUser(user, token);
-            url =emailService.passwordResetTokenMail(user, emailService.applicationUrl(request), token);
-        }
-        return url;
+            emailService.passwordResetTokenMail(user, emailService.applicationUrl(request), token);
     }
 }

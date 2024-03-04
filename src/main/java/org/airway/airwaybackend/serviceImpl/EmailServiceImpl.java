@@ -43,12 +43,11 @@ public class EmailServiceImpl  {
                 request.getContextPath();
     }
 
-    public String passwordResetTokenMail(User user, String applicationUrl, String token) {
+    public void passwordResetTokenMail(User user, String applicationUrl, String token) {
         String url = applicationUrl +"/resetPassword/" + token;
         this.sendMail(
                 user.getEmail(),
-                "Click on your Password link to reset your Password: " + url,
-                "Password Reset Code Sent");
-        return url;
+                "Password Reset Link",
+                "Please click on the link below to reset your password: " + url);
     }
 }
