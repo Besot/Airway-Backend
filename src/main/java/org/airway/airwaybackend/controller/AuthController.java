@@ -1,12 +1,15 @@
 package org.airway.airwaybackend.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
 import org.airway.airwaybackend.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -22,5 +25,11 @@ String result = userService.logInUser(loginDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody EmailSenderDto passwordDto, HttpServletRequest request){
+        userService.forgotPassword(passwordDto, request);
+        return new ResponseEntity<>("Forgot password email successfully sent", HttpStatus.OK);
+
+    }
 
 }
