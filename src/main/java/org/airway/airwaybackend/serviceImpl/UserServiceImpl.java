@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.serviceImpl;
 
+import org.airway.airwaybackend.dto.ChangePasswordDto;
 import org.airway.airwaybackend.dto.LoginDto;
 import org.airway.airwaybackend.exception.UserNotVerifiedException;
 import org.airway.airwaybackend.model.User;
@@ -46,9 +47,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return jwtUtils.createJwt.apply(user);
     }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email Not Found"));
-    }
 
     public boolean checkIfValidOldPassword(User user, String oldPassword) {
         return passwordEncoder.matches(oldPassword, user.getPassword());
@@ -57,5 +55,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void changePassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    @Override
+    public String changeUserPassword(ChangePasswordDto passwordDto) {
+        User user = userRepository.findUserByEmail(passwordDto.getEmail());
+        if (user == null) {
+            return "User not found";
+        }
+        if (!checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
+            return "Invalid Old Password";
+        }
+
+        if (passwordDto.getOldPassword().equals(passwordDto.getNewPassword())) {
+            return "New password must be different from the old password";
+        }
+
+        changePassword(user, passwordDto.getNewPassword());
+
+        if (checkIfValidOldPassword(user, passwordDto.getNewPassword())) {
+            return "Password Changed Successfully";
+        } else {
+            return "Failed to change password";
+        }
     }
 }
