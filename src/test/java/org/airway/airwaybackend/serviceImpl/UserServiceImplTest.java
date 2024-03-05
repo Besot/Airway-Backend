@@ -8,6 +8,7 @@ import org.airway.airwaybackend.model.PasswordResetToken;
 import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.repository.PasswordResetTokenRepository;
 import org.airway.airwaybackend.repository.UserRepository;
+import org.airway.airwaybackend.repository.VerificationTokenRepository;
 import org.airway.airwaybackend.utils.JwtUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class UserServiceImplTest {
     @BeforeEach
     public void setup() {
         autoCloseable=  MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository,jwtUtils, passwordEncoder, passwordResetTokenRepository, emailService);
+        userService = new UserServiceImpl(userRepository,jwtUtils, passwordEncoder, passwordResetTokenRepository, emailService, (VerificationTokenRepository) userService);
     }
     @Test
     void testLoginUser_UsrNotVerified() {
@@ -83,6 +84,7 @@ class UserServiceImplTest {
 
 
         UserRepository userRepositoryMock = mock(UserRepository.class);
+        UserServiceImpl userServiceImplMock = mock(UserServiceImpl.class);
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
         JwtUtils jwtUtilsMock = mock(JwtUtils.class);
         EmailServiceImpl emailServiceMock = mock(EmailServiceImpl.class);
@@ -90,7 +92,7 @@ class UserServiceImplTest {
 
         when(userRepositoryMock.findByEmail(userEmail)).thenReturn(Optional.of(mockUser));
 
-        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock,jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock, emailServiceMock);
+        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock,jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock, emailServiceMock, (VerificationTokenRepository) userServiceImplMock);
 
         // Act
         UserDetails userDetails = userService.loadUserByUsername(userEmail);
@@ -115,9 +117,10 @@ class UserServiceImplTest {
         PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
         JwtUtils jwtUtilsMock = mock(JwtUtils.class);
         EmailServiceImpl emailServiceMock = mock(EmailServiceImpl.class);
+        UserServiceImpl userServiceImplMock = mock(UserServiceImpl.class);
         PasswordResetTokenRepository passwordResetTokenRepositoryMock = mock(PasswordResetTokenRepository.class);
 
-        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock, emailServiceMock);
+        UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, jwtUtilsMock, passwordEncoderMock, passwordResetTokenRepositoryMock, emailServiceMock, (VerificationTokenRepository) userServiceImplMock);
 
         // Act and Assert
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(userEmail));
