@@ -38,13 +38,13 @@ public class EmailServiceImpl  {
         return "http://" +
                 request.getServerName() +
                 ":" +
-                request.getServerPort() +
+                "5173" +
                 "/api/v1/auth" +
                 request.getContextPath();
     }
 
     public void passwordResetTokenMail(User user, String applicationUrl, String token) {
-        String url = applicationUrl +"/resetPassword/" + token;
+        String url = applicationUrl +"/reset-password/" + token;
         this.sendMail(
                 user.getEmail(),
                 "Password Reset Link",

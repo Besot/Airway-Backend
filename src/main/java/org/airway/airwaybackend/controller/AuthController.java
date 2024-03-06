@@ -6,6 +6,7 @@ import org.airway.airwaybackend.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
+import org.airway.airwaybackend.dto.ResetPasswordDto;
 import org.airway.airwaybackend.dto.SignupDto;
 import org.airway.airwaybackend.event.RegistrationCompleteEvent;
 import org.airway.airwaybackend.model.User;
@@ -64,6 +65,11 @@ String result = userService.logInUser(loginDto);
         userService.forgotPassword(passwordDto, request);
         return new ResponseEntity<>("Forgot password email successfully sent", HttpStatus.OK);
 
+    }
+
+    @PostMapping("/reset-password/{token}")
+    public ResponseEntity<String> resetPassword(@PathVariable String token, @RequestBody ResetPasswordDto passwordDto) {
+        return userService.resetPassword(token, passwordDto);
     }
 
 }
