@@ -5,8 +5,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
 import org.airway.airwaybackend.dto.ResetPasswordDto;
+import org.airway.airwaybackend.dto.SignupDto;
+import org.airway.airwaybackend.event.RegistrationCompleteEvent;
+import org.airway.airwaybackend.model.User;
+import org.airway.airwaybackend.serviceImpl.EmailServiceImpl;
 import org.airway.airwaybackend.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +20,30 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("/api/v1/auth")
 public class AuthController {
+    private ApplicationEventPublisher publisher;
+    private EmailServiceImpl emailService;
     private final UserServiceImpl userService;
     @Autowired
-    public AuthController(UserServiceImpl userService) {
+    public AuthController(ApplicationEventPublisher publisher, EmailServiceImpl emailService, UserServiceImpl userService) {
+        this.publisher = publisher;
+        this.emailService = emailService;
         this.userService = userService;
+    }
+
+    @PostMapping("/passenger-sign-up")
+    public ResponseEntity<String> signUpUser(@RequestBody SignupDto signupDto, final HttpServletRequest request){
+        User user = userService.saveUser(signupDto);
+        publisher.publishEvent(new RegistrationCompleteEvent(user, emailService.applicationUrl(request)));
+        return new ResponseEntity<>("Signup successful, go to your mail to verify your account", HttpStatus.OK);
+    }
+
+    @GetMapping("/verifyRegistration")
+    public ResponseEntity<String> verifyRegistration(@RequestParam("token") String token){
+        String result = userService.validateVerificationToken(token);
+        if (result.equalsIgnoreCase("valid token")){
+            return new ResponseEntity<>( "User Verified Successfully",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User signed up", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/login")
