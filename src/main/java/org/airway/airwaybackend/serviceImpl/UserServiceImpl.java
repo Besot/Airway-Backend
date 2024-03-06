@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
@@ -49,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     public boolean checkIfValidOldPassword(User user, String oldPassword) {
-        return passwordEncoder.matches(oldPassword, user.getPassword());
+        return validatePassword(oldPassword) && passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
     public void changePassword(User user, String newPassword) {
@@ -63,20 +66,48 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             return "User not found";
         }
-        if (!checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
-            return "Invalid Old Password";
-        }
+
+//        THIS IS COMMENTED OUT BECAUSE THE ADMIN PASSWORD IS 1234
+
+//        if (!validatePassword(passwordDto.getOldPassword())) {
+//            return "Invalid Old Password. Password must meet the required criteria: at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character (@#$%^&+=), and minimum length of 8 characters";
+//        }
+
+
+
 
         if (passwordDto.getOldPassword().equals(passwordDto.getNewPassword())) {
             return "New password must be different from the old password";
         }
 
-        changePassword(user, passwordDto.getNewPassword());
-
-        if (checkIfValidOldPassword(user, passwordDto.getNewPassword())) {
-            return "Password Changed Successfully";
-        } else {
-            return "Failed to change password";
+        if (!validatePassword(passwordDto.getNewPassword())) {
+            return "New password does not meet the required criteria: at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character (@#$%^&+=), and minimum length of 8 characters";
         }
+
+        if (!passwordEncoder.matches(passwordDto.getOldPassword(),user.getPassword())){
+            return "Password does not match";
+         } else {
+        return "Password Changed Successfully ";
     }
+
+
+
+    }
+
+
+    public boolean validatePassword(String password) {
+        String capitalLetterPattern = "(?=.*[A-Z])";
+        String lowercaseLetterPattern = "(?=.*[a-z])";
+        String digitPattern = "(?=.*\\d)";
+        String symbolPattern = "(?=.*[@#$%^&+=])";
+        String lengthPattern = ".{8,}";
+
+        String regex = capitalLetterPattern + lowercaseLetterPattern + digitPattern + symbolPattern + lengthPattern;
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+
+        return matcher.matches();
+    }
+
 }

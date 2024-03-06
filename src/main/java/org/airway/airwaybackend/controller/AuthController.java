@@ -26,7 +26,7 @@ String result = userService.logInUser(loginDto);
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(@RequestBody ChangePasswordDto passwordDto) {
-        return userService.changeUserPassword(passwordDto);
+    public ResponseEntity <String> changePassword(@RequestBody ChangePasswordDto passwordDto) {
+        return new ResponseEntity<>(userService.changeUserPassword(passwordDto), HttpStatus.OK);
     }
 }
