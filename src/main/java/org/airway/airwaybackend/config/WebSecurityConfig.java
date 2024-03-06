@@ -77,7 +77,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}").hasAuthority(String.valueOf(Role.ADMIN))
                                 .requestMatchers(
-                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights").permitAll()
+                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration").permitAll()
                                 .requestMatchers(
                                         "/airports/**").authenticated())
                 .sessionManagement(sessionManagement ->
