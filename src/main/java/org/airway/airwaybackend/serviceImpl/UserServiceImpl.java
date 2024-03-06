@@ -185,6 +185,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             throw new InvalidTokenException("Invalid Token");
         }
+    }
 
     @Override
     public User saveUser(SignupDto signupDto) {
