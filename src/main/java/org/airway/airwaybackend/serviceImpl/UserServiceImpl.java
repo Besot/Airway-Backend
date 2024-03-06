@@ -96,9 +96,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 //            return "Invalid Old Password. Password must meet the required criteria: at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character (@#$%^&+=), and minimum length of 8 characters";
 //        }
 
-
-
-
         if (passwordDto.getOldPassword().equals(passwordDto.getNewPassword())) {
             return "New password must be different from the old password";
         }
@@ -113,10 +110,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return "Password Changed Successfully ";
     }
 
-
-
     }
-
 
    
 
@@ -186,11 +180,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-        Matcher matcher = pattern.matcher(password);
-
-        return matcher.matches();
-
-    }
     public void saveVerificationTokenForUser(User user, String token) {
         VerificationToken verificationToken = new VerificationToken(user, token);
         verificationTokenRepository.save(verificationToken);
