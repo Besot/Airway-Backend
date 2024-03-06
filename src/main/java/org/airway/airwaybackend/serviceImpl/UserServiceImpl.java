@@ -1,5 +1,7 @@
 package org.airway.airwaybackend.serviceImpl;
 
+
+import org.airway.airwaybackend.dto.ChangePasswordDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
@@ -9,6 +11,7 @@ import org.airway.airwaybackend.dto.SignupDto;
 import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.exception.PasswordsDontMatchException;
 import org.airway.airwaybackend.exception.UserNotVerifiedException;
+import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.model.PasswordResetToken;
 import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.model.VerificationToken;
@@ -25,7 +28,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
@@ -72,6 +74,48 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return jwtUtils.createJwt.apply(user);
     }
+
+
+
+    public boolean checkIfValidOldPassword(User user, String oldPassword) {
+        return validatePassword(oldPassword) && passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    public void changePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    public String changeUserPassword(ChangePasswordDto passwordDto) {
+        User user = userRepository.findUserByEmail(passwordDto.getEmail());
+        if (user == null) {
+            return "User not found";
+        }
+
+//        THIS IS COMMENTED OUT BECAUSE THE ADMIN PASSWORD IS 1234
+
+//        if (!validatePassword(passwordDto.getOldPassword())) {
+//            return "Invalid Old Password. Password must meet the required criteria: at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character (@#$%^&+=), and minimum length of 8 characters";
+//        }
+
+        if (passwordDto.getOldPassword().equals(passwordDto.getNewPassword())) {
+            return "New password must be different from the old password";
+        }
+
+        if (!validatePassword(passwordDto.getNewPassword())) {
+            return "New password does not meet the required criteria: at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character (@#$%^&+=), and minimum length of 8 characters";
+        }
+
+        if (!passwordEncoder.matches(passwordDto.getOldPassword(),user.getPassword())){
+            return "Password does not match";
+         } else {
+        return "Password Changed Successfully ";
+    }
+
+    }
+
+   
 
     public User findUserByEmail(String username) {
         return userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Username Not Found" + username));
@@ -165,6 +209,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setUserRole(Role.PASSENGER);
         return userRepository.save(user);
     }
+  
     public boolean validatePassword(String password){
         String capitalLetterPattern = "(?=.*[A-Z])";
         String lowercaseLetterPattern = "(?=.*[a-z])";
@@ -179,8 +224,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Matcher matcher = pattern.matcher(password);
 
         return matcher.matches();
-
     }
+
+
     public void saveVerificationTokenForUser(User user, String token) {
         VerificationToken verificationToken = new VerificationToken(user, token);
         verificationTokenRepository.save(verificationToken);
@@ -209,4 +255,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         verificationTokenRepository.save(verificationToken);
         return verificationToken;
     }
+
 }

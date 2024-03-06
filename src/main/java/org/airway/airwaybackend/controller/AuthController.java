@@ -1,6 +1,8 @@
 package org.airway.airwaybackend.controller;
 
-
+import org.airway.airwaybackend.dto.ChangePasswordDto;
+import org.airway.airwaybackend.dto.LoginDto;
+import org.airway.airwaybackend.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
@@ -52,6 +54,12 @@ String result = userService.logInUser(loginDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    @PostMapping("/changePassword")
+    public ResponseEntity <String> changePassword(@RequestBody ChangePasswordDto passwordDto) {
+        return new ResponseEntity<>(userService.changeUserPassword(passwordDto), HttpStatus.OK);
+    }
+  
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody EmailSenderDto passwordDto, HttpServletRequest request){
         userService.forgotPassword(passwordDto, request);
