@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -13,11 +15,14 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @OneToOne
     private Classes className;
     private char seatAlphabet;
-    private int numberOfSeat;
+    private int totalNumberOfSeat;
     @ManyToOne
     private Flight flightName;
-    // Getters and setters
+    private int availableSeat;
+    private int noOfOccupiedSeats;
+    @OneToMany
+    private List<SeatList> seatLists;
 }

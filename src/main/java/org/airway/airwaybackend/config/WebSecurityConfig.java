@@ -75,9 +75,9 @@ public class WebSecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequests ->
-                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}").hasAuthority(String.valueOf(Role.ADMIN))
+                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}", "/api/v1/flights/add-flight").hasAuthority(String.valueOf(Role.ADMIN))
                                 .requestMatchers(
-                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration", "/api/v1/auth/changePassword").permitAll()
+                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration", "/api/v1/auth/changePassword", "/api/v1/seat/get-SeatList/{seatId}").permitAll()
                                 .requestMatchers(
                                         "/airports/**").authenticated())
                 .sessionManagement(sessionManagement ->

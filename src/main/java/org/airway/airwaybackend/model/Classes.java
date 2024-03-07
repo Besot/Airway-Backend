@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.airway.airwaybackend.enums.FlightStatus;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -17,17 +18,24 @@ public class Classes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String className;
-    private double price;
     private String baggageAllowance;
-    @Enumerated(EnumType.STRING)
-    private FlightStatus flightStatus;
-    private double taxFee;
-    private double surchargeFee;
-    private double serviceCharge;
+    private BigDecimal taxFee;
+    private BigDecimal surchargeFee;
+    private BigDecimal serviceCharge;
+    private BigDecimal basePrice;
+    private BigDecimal totalPrice;
     @OneToOne
     private Seat seat;
     @ManyToOne
     private Flight flight;
     @OneToMany
     private List<Passenger> passengers;
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hash(id);
+        return result;
+    }
 }

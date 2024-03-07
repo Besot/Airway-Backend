@@ -1,7 +1,9 @@
 package org.airway.airwaybackend.controller;
 
-import org.airway.airwaybackend.apiResponse.PagedResponse;
+import org.airway.airwaybackend.dto.AddFlightDto;
 import org.airway.airwaybackend.dto.FlightSearchDto;
+import org.airway.airwaybackend.exception.AirlineNotFoundException;
+import org.airway.airwaybackend.exception.AirportNotFoundException;
 import org.airway.airwaybackend.model.Airport;
 import org.airway.airwaybackend.model.Flight;
 import org.airway.airwaybackend.serviceImpl.FlightServiceImpl;
@@ -54,4 +56,10 @@ public class FlightController {
 
         return new ResponseEntity<>(flightService.getAllFlights(pageNo, pageSize), HttpStatus.OK);
     }
+    @PostMapping("/add-flight")
+    public ResponseEntity<String> addFlight(@RequestBody AddFlightDto flightDto) throws AirportNotFoundException, AirlineNotFoundException {
+        String response = flightService.addNewFlight(flightDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
 }

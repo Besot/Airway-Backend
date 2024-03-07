@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.airway.airwaybackend.enums.FlightDirection;
+import org.airway.airwaybackend.enums.FlightStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,6 +21,7 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private FlightDirection flightDirection;
+    private FlightStatus flightStatus;
     @Column(unique = true)
     private String flightNo;
     @ManyToOne
@@ -28,7 +30,7 @@ public class Flight {
     private LocalDate departureDate;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
-    private int duration;
+    private long duration;
     private LocalDate returnDate;
     private LocalTime returnTime;
     @ManyToOne
@@ -42,6 +44,8 @@ public class Flight {
     private int noOfChildren;
     private int noOfAdult;
     private int noOfInfant;
+    @ManyToOne
+    private User user;
     @JsonIgnore
     @ManyToMany
     @JoinTable(
