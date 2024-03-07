@@ -22,6 +22,7 @@ public class Seat {
     @ManyToOne
     private Flight flightName;
     private int availableSeat;
+    private int noOfOccupiedSeats;
     @OneToMany
-    private List<SeatList>seatLists;
+    private List<SeatList> seatLists;
 }

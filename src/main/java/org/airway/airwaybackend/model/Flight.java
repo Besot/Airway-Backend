@@ -30,7 +30,7 @@ public class Flight {
     private LocalDate departureDate;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
-    private Long duration;
+    private long duration;
     private LocalDate returnDate;
     private LocalTime returnTime;
     @ManyToOne
@@ -44,6 +44,8 @@ public class Flight {
     private int noOfChildren;
     private int noOfAdult;
     private int noOfInfant;
+    @ManyToOne
+    private User user;
     @JsonIgnore
     @ManyToMany
     @JoinTable(

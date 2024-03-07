@@ -15,9 +15,26 @@ public class DefaultExceptionHandler {
         return buildErrorResponse(request, HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
+    @ExceptionHandler(AirlineNotFoundException.class)
+    public ResponseEntity<ApiError> AirlineNotFoundException(
+            UserNotVerifiedException e, HttpServletRequest request) {
+        return buildErrorResponse(request, HttpStatus.NOT_FOUND, e.getMessage());
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> UserNotFoundException(
+            UserNotVerifiedException e, HttpServletRequest request) {
+        return buildErrorResponse(request, HttpStatus.NOT_FOUND, e.getMessage());
+    }
+    @ExceptionHandler(SeatListNotFoundException.class)
+    public ResponseEntity<ApiError> SeatListNotFoundException(
+            UserNotVerifiedException e, HttpServletRequest request) {
+        return buildErrorResponse(request, HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
     private ResponseEntity<ApiError> buildErrorResponse(
             HttpServletRequest request, HttpStatus status, String message) {
         return buildErrorResponse(request, status, message, null);
+
     }
 
     private ResponseEntity<ApiError> buildErrorResponse(

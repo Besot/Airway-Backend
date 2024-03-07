@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.airway.airwaybackend.enums.FlightStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
