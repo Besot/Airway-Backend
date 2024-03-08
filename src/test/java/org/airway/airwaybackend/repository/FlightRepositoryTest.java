@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -26,21 +27,23 @@ class FlightRepositoryTest {
         int noOfChildren = 1;
         int noOfInfant = 0;
 
-        when(flightRepository.findByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
+        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
                 departurePort, arrivalPort, departureDate, noOfAdult, noOfChildren, noOfInfant))
-                .thenReturn(List.of(new Flight(), new Flight()));
+                .thenReturn(Optional.of(List.of(new Flight(), new Flight())));
 
-        List<Flight> flights = flightRepository.findByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
+       Optional< List<Flight>> flights = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
                 departurePort, arrivalPort, departureDate, noOfAdult, noOfChildren, noOfInfant);
 
-        assert !flights.isEmpty();
-        assert flights.size() == 2;
+        assert flights.isPresent();
+        List<Flight> flightList = flights.get();
+
+        assert flightList.size() == 2;
     }
 
 
 
     @Test
-    void findByDeparturePortAndArrivalPortAndDepartureDateAndReturnDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual() {
+    void SearchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual() {
         Airport departurePort = new Airport();
         Airport arrivalPort = new Airport();
         LocalDate departureDate = LocalDate.now();
@@ -49,14 +52,18 @@ class FlightRepositoryTest {
         int noOfChildren = 1;
         int noOfInfant = 0;
 
-        when(flightRepository.findByDeparturePortAndArrivalPortAndDepartureDateAndReturnDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
-                departurePort, arrivalPort, departureDate, returnDate, noOfAdult, noOfChildren, noOfInfant))
-                .thenReturn(List.of(new Flight(), new Flight()));
+        when(flightRepository
+                .searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
+                        departurePort, arrivalPort, returnDate, noOfAdult, noOfChildren, noOfInfant))
+                .thenReturn(Optional.of(List.of(new Flight(), new Flight())));
 
-        List<Flight> flights = flightRepository.findByDeparturePortAndArrivalPortAndDepartureDateAndReturnDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
-                departurePort, arrivalPort, departureDate, returnDate, noOfAdult, noOfChildren, noOfInfant);
+       Optional< List<Flight> >flights = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
+                departurePort, arrivalPort, returnDate, noOfAdult, noOfChildren, noOfInfant);
 
-        assert !flights.isEmpty();
-        assert flights.size() == 2;
+
+        assert flights.isPresent();
+        List<Flight> flightList = flights.get();
+
+        assert flightList.size() == 2;
     }
 }
