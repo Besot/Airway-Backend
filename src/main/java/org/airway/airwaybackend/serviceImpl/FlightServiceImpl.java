@@ -273,13 +273,13 @@ public class FlightServiceImpl implements FlightService {
             for (Classes classes : classesList) {
                 Classes saveClasses = new Classes();
                 saveClasses.setClassName(classes.getClassName());
-                saveClasses.setBasePrice(classes.getBasePrice());
+                saveClasses.setBaseFare(classes.getBaseFare());
                 saveClasses.setBaggageAllowance(classes.getBaggageAllowance());
 
                 saveClasses.setTaxFee(classes.getTaxFee());
                 saveClasses.setSurchargeFee(classes.getSurchargeFee());
                 saveClasses.setServiceCharge(classes.getServiceCharge());
-                saveClasses.setTotalPrice(classes.getBasePrice().add( classes.getTaxFee()).add (classes.getSurchargeFee() ). add(classes.getServiceCharge()));
+                saveClasses.setTotalPrice(classes.getBaseFare().add( classes.getTaxFee()).add (classes.getSurchargeFee() ). add(classes.getServiceCharge()));
                 saveClasses.setFlight(saveFlight);
                 Classes savedClasses = classesRepository.save(saveClasses);
                 classes.getSeat().setClassName(savedClasses);

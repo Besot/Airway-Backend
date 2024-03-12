@@ -22,7 +22,7 @@ public class Classes {
     private BigDecimal taxFee;
     private BigDecimal surchargeFee;
     private BigDecimal serviceCharge;
-    private BigDecimal basePrice;
+    private BigDecimal baseFare;
     private BigDecimal totalPrice;
     @OneToOne
     private Seat seat;
