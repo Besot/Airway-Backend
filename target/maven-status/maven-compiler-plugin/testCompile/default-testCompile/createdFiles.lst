@@ -1,9 +1,0 @@
-org/airway/airwaybackend/controller/AuthControllerTest.class
-org/airway/airwaybackend/controller/CountryControllerTest.class
-org/airway/airwaybackend/serviceImpl/FlightServiceImplTest.class
-org/airway/airwaybackend/controller/FlightControllerTest.class
-org/airway/airwaybackend/serviceImpl/UserServiceImplTest.class
-org/airway/airwaybackend/AirwayBackendApplicationTests.class
-org/airway/airwaybackend/serviceImpl/CountryServiceImplTest.class
-org/airway/airwaybackend/boot/AdminDataLoaderTest.class
-org/airway/airwaybackend/repository/FlightRepositoryTest.class

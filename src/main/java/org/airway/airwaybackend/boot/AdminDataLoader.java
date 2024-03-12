@@ -110,11 +110,8 @@ import java.util.List;
                     {"United States", "US"},
                     {"Vietnam", "VN"}
             };
-
-                Long id = 1L;
             for (String[] countryData : countriesData) {
                 Country country = new Country();
-                country.setId(id++);
                 country.setName(countryData[0]);
                 country.setIsoCode(countryData[1]);
                 countryRepository.save(country);
