@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3df3da18-4182-4000-b55b-f195d0231a31" name="Changes" comment="sign up commit">
+    <list default="true" id="3df3da18-4182-4000-b55b-f195d0231a31" name="Changes" comment="This commit contains the seeded countries{Id, Name, ISOCode} and Endpoints to get by id, by isoCode and to get the list of countries.">
       <change beforePath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/boot/AdminDataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/airway/airwaybackend/boot/AdminDataLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/boot/AdminDataLoaderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/airway/airwaybackend/boot/AdminDataLoaderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +87,23 @@
       <option name="project" value="LOCAL" />
       <updated>1709641677135</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="This commit contains the seeded countries{Id, Name, ISOCode} and Endpoints to get by id, by isoCode and to get the list of countries.">
+      <option name="closed" value="true" />
+      <created>1710208092703</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1710208092703</updated>
+    </task>
+    <task id="LOCAL-00003" summary="This commit contains the seeded countries{Id, Name, ISOCode} and Endpoints to get by id, by isoCode and to get the list of countries.">
+      <option name="closed" value="true" />
+      <created>1710210065529</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1710210065529</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -107,6 +122,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="sign up commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="sign up commit" />
+    <MESSAGE value="This commit contains the seeded countries{Id, Name, ISOCode} and Endpoints to get by id, by isoCode and to get the list of countries." />
+    <option name="LAST_COMMIT_MESSAGE" value="This commit contains the seeded countries{Id, Name, ISOCode} and Endpoints to get by id, by isoCode and to get the list of countries." />
   </component>
 </project>

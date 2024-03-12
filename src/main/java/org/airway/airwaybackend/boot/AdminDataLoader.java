@@ -1,7 +1,4 @@
 package org.airway.airwaybackend.boot;
-
-
-
 import jakarta.annotation.PostConstruct;
 import org.airway.airwaybackend.config.SeedProperties;
 import org.airway.airwaybackend.enums.Role;
