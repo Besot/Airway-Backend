@@ -2,13 +2,13 @@ package org.airway.airwaybackend.serviceImpl;
 
 
 import org.airway.airwaybackend.dto.AddFlightDto;
+import org.airway.airwaybackend.dto.ClassDto;
 import org.airway.airwaybackend.dto.FlightSearchDto;
 import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.exception.*;
 import org.airway.airwaybackend.model.*;
 import org.airway.airwaybackend.dto.FlightSearchResponse;
-import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.enums.FlightStatus;
 import org.airway.airwaybackend.exception.AirportNotFoundException;
 import org.airway.airwaybackend.exception.FlightNotFoundException;
