@@ -3,7 +3,6 @@ package org.airway.airwaybackend.service;
 import org.airway.airwaybackend.dto.AddFlightDto;
 import org.airway.airwaybackend.dto.FlightSearchResponse;
 import org.airway.airwaybackend.enums.FlightDirection;
-import org.airway.airwaybackend.exception.AirlineNotFoundException;
 import org.airway.airwaybackend.model.Airport;
 import org.airway.airwaybackend.model.Flight;
 import org.airway.airwaybackend.model.Seat;
