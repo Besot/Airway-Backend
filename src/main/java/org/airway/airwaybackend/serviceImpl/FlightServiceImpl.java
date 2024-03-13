@@ -351,8 +351,6 @@ public class FlightServiceImpl implements FlightService {
     }
 
 
-
-
     public String updateFlight( Long id, UpdateFlightDto flightDto) throws FlightNotFoundException, AirportNotFoundException, AirlineNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
