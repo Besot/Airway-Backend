@@ -135,7 +135,7 @@ public class FlightServiceImpl implements FlightService {
                 ClassDto classDto = new ClassDto();
                 classDto.setId(classes.getId());
                 classDto.setClassName(classes.getClassName());
-                classDto.setTotalPrice(classes.getTotalPrice());
+                classDto.setTotalPrice(classes.getTotalFare());
                 classDto.setAvailableSeat(classes.getSeat().getAvailableSeat());
                 classDtos.add(classDto);
             }
@@ -279,7 +279,7 @@ public class FlightServiceImpl implements FlightService {
                 saveClasses.setTaxFee(classes.getTaxFee());
                 saveClasses.setSurchargeFee(classes.getSurchargeFee());
                 saveClasses.setServiceCharge(classes.getServiceCharge());
-                saveClasses.setTotalPrice(classes.getBaseFare().add( classes.getTaxFee()).add (classes.getSurchargeFee() ). add(classes.getServiceCharge()));
+                saveClasses.setTotalFare(classes.getBaseFare().add( classes.getTaxFee()).add (classes.getSurchargeFee() ). add(classes.getServiceCharge()));
                 saveClasses.setFlight(saveFlight);
                 Classes savedClasses = classesRepository.save(saveClasses);
                 classes.getSeat().setClassName(savedClasses);

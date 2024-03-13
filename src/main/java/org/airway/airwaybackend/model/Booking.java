@@ -6,7 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.airway.airwaybackend.enums.BookingStatus;
+import org.airway.airwaybackend.enums.FlightDirection;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,19 +21,30 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String PNR;
-    private String ticketNo;
-    @ManyToMany
+    private String bookingReferenceCode;
+    private FlightDirection tripType;
+    private String passengerCode;
+    @OneToMany
+    private List<PNR> pnrList;
+    @OneToMany
+    private List<Ticket> tickets;
+    @OneToMany
     private List<Passenger> passengers;
-    @ManyToMany
-    private List<Flight> flights;
-    @ManyToMany
-    private List<Seat> seats;
-    private double amount;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    List<BookingFlight>bookingFlights;
+    private BigDecimal totalFare;
     @ManyToOne
     private User userId;
     private Boolean pay;
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
-    // Getters and setters
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    private String baggageAllowance;
+    private BigDecimal taxFee;
+    private BigDecimal surchargeFee;
+    private BigDecimal serviceCharge;
+    private BigDecimal baseFare;
+
+
 }
