@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -74,12 +75,12 @@ public class WebSecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequests ->
-                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}", "/api/v1/flights/add-flight", "api/v1/flights/update-flight/{flightId}").hasAuthority(String.valueOf(Role.ADMIN))
+                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}", "/api/v1/flights/add-flight").hasAuthority(String.valueOf(Role.ADMIN))
                                 .requestMatchers(
 
                                      
 
-                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration", "/api/v1/auth/changePassword", "/api/v1/countries/get-all-countries", "/api/v1/countries/get-country/{id}", "/api/v1/countries/get-by-iso/{isoCode}","/api/v1/seat/get-SeatList/{seatId}","/api/v1/flights/departing-flights", "/api/v1/flights/returning-flights", "/api/v1/flights/all-returning-flights","/api/v1/flights/all-departing-flights", "/api/v1/booking/bookings").permitAll()
+                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration", "/api/v1/auth/changePassword", "/api/v1/countries/get-all-countries", "/api/v1/countries/get-country/{id}", "/api/v1/countries/get-by-iso/{isoCode}","/api/v1/seat/get-SeatList/{seatId}","/api/v1/flights/departing-flights", "/api/v1/flights/returning-flights", "/api/v1/flights/all-returning-flights","/api/v1/flights/all-departing-flights", "/api/v1/booking/bookings", "/api/v1/bookings/booking-flight").permitAll()
 
                                 .requestMatchers(
                                         "/airports/**").authenticated())
