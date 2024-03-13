@@ -1,14 +1,11 @@
 package org.airway.airwaybackend.serviceImpl;
 
 
-import org.airway.airwaybackend.dto.AddFlightDto;
-import org.airway.airwaybackend.dto.ClassDto;
-import org.airway.airwaybackend.dto.FlightSearchDto;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.exception.*;
 import org.airway.airwaybackend.model.*;
-import org.airway.airwaybackend.dto.FlightSearchResponse;
 import org.airway.airwaybackend.enums.FlightStatus;
 import org.airway.airwaybackend.exception.AirportNotFoundException;
 import org.airway.airwaybackend.exception.FlightNotFoundException;
@@ -24,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -350,5 +349,135 @@ public class FlightServiceImpl implements FlightService {
         return seatListRepository.saveAll(seatLists);
 
     }
+
+
+
+
+    public String updateFlight( Long id, UpdateFlightDto flightDto) throws FlightNotFoundException, AirportNotFoundException, AirlineNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findUserByEmail(username);
+
+        if (user == null) {
+            throw new UserNotFoundException("Admin must be Logged In to Continue");
+        }
+        if (!user.getUserRole().equals(Role.ADMIN)) {
+            throw new UserNotVerifiedException("You are not allowed to Update New Flight");
+        }
+
+        Flight flight = flightRepository.findById(id).orElseThrow(() -> new FlightNotFoundException("Flight is not Found"));
+
+
+        if (!Objects.equals(user.getUsername(), flight.getUser().getUsername())) {
+            throw new UserNotVerifiedException("You can't update this flight");
+        }
+
+
+        if (flightDto.getFlightDirection() != null) {
+            flight.setFlightDirection(flightDto.getFlightDirection());
+            if (flightDto.getFlightDirection() == FlightDirection.ROUND_TRIP) {
+                flight.setReturnDate(flightDto.getReturnDate());
+                flight.setReturnTime(flightDto.getReturnTime());
+            } else if (flightDto.getFlightDirection() == FlightDirection.ONE_WAY) {
+                flight.setReturnDate(null);
+                flight.setReturnTime(null);
+            }
+        }
+        if (flightDto.getFlightNo() != null) {
+            String newFlightNoLetter = generateRandomLetters(2);
+            String newFlightNo = generateRandomNumber(3);
+            String generatedFlightNo = newFlightNoLetter + newFlightNo;
+            flight.setFlightNo(generatedFlightNo);
+        }
+        if (flightDto.getAirlineName() != null) {
+            Airline airline = airlineRepository.findByNameIgnoreCase(flightDto.getAirlineName()).orElseThrow(() -> new AirlineNotFoundException("Airline with name not found"));
+            flight.setAirline(airline);
+        }
+        if (flightDto.getDuration() != 0) {
+            flight.setDuration(flightDto.getDuration());
+        }
+        if (flightDto.getFlightStatus() != null) {
+            flight.setFlightStatus(flightDto.getFlightStatus());
+        }
+        if (flightDto.getDepartureDate() != null) {
+            flight.setDepartureDate(flightDto.getDepartureDate());
+        }
+        if (flightDto.getDepartureTime() != null) {
+            flight.setDepartureTime(flightDto.getDepartureTime());
+        }
+        if (flightDto.getDepartureDate() != null && flightDto.getDepartureTime() != null && flightDto.getDuration() != 0) {
+            LocalDateTime arrivalDateTime = calculateArrivalDateTime(LocalDateTime.of(flightDto.getDepartureDate(), flightDto.getDepartureTime()), flightDto.getDuration());
+
+            flight.setArrivalDate(arrivalDateTime.toLocalDate());
+            flight.setArrivalTime(arrivalDateTime.toLocalTime());
+        }
+        if (flightDto.getTotalSeat() != 0) {
+            flight.setTotalSeat(flightDto.getTotalSeat());
+        }
+        if (flightDto.getNoOfAdult() != 0) {
+            flight.setNoOfAdult(flightDto.getNoOfAdult());
+        }
+        if (flightDto.getNoOfChildren() != 0) {
+            flight.setNoOfChildren(flightDto.getNoOfChildren());
+        }
+        if (flightDto.getNoOfInfant() != 0) {
+            flight.setNoOfInfant(flightDto.getNoOfInfant());
+        }
+
+        if (flightDto.getArrivalPortName() != null) {
+            Airport arrivalPort = airportRepository.findByIataCodeIgnoreCase(flightDto.getArrivalPortName()).orElseThrow(() -> new AirportNotFoundException("Airport with code not Found"));
+            flight.setArrivalPort(arrivalPort);
+        }
+        if (flightDto.getDeparturePortName() != null) {
+            Airport departurePort = airportRepository.findByIataCodeIgnoreCase(flightDto.getDeparturePortName()).orElseThrow(() -> new AirportNotFoundException("Airport with code not Found"));
+            flight.setDeparturePort(departurePort);
+        }
+
+
+
+
+
+
+
+        Flight saveFlight = flightRepository.save(flight);
+
+        List<Classes> existingClassesList = flight.getClasses();
+        List<Classes> updatedClassesList = flightDto.getClasses();
+        if (!(updatedClassesList.isEmpty()) && !(existingClassesList.isEmpty())) {
+            for (int i = 0; i < existingClassesList.size(); i++) {
+                existingClassesList.get(i).setClassName(updatedClassesList.get(i).getClassName());
+                existingClassesList.get(i).setBasePrice(updatedClassesList.get(i).getBaseFare());
+                existingClassesList.get(i).setBaggageAllowance(updatedClassesList.get(i).getBaggageAllowance());
+                existingClassesList.get(i).setTaxFee(updatedClassesList.get(i).getTaxFee());
+                existingClassesList.get(i).setSurchargeFee(updatedClassesList.get(i).getSurchargeFee());
+                existingClassesList.get(i).setServiceCharge(updatedClassesList.get(i).getServiceCharge());
+                existingClassesList.get(i).setTotalPrice(updatedClassesList.get(i).getBaseFare().add(updatedClassesList.get(i).getTaxFee()).add(updatedClassesList.get(i).getSurchargeFee()).add(updatedClassesList.get(i).getServiceCharge()));
+                existingClassesList.get(i).setNumOfSeats(updatedClassesList.get(i).getSeat().getTotalNumberOfSeat());
+                existingClassesList.get(i).setFlight(saveFlight);
+                Classes savedClasses = classesRepository.save(existingClassesList.get(i));
+                existingClassesList.get(i).getSeat().setClassName(savedClasses);
+                existingClassesList.get(i).getSeat().setFlightName(saveFlight);
+                existingClassesList.get(i).getSeat().setSeatAlphabet(updatedClassesList.get(i).getSeat().getSeatAlphabet());
+                existingClassesList.get(i).getSeat().setTotalNumberOfSeat(updatedClassesList.get(i).getSeat().getTotalNumberOfSeat());
+                Seat seat = seatRepository.save(existingClassesList.get(i).getSeat());
+                existingClassesList.get(i).setSeat(seat);
+                classesRepository.save(savedClasses);
+            }
+        }
+        return "Flight Updated Successfully";
+    }
+
+    public LocalDateTime calculateArrivalDateTime(LocalDateTime departureDateTime, long duration) {
+        if (departureDateTime != null) {
+            LocalDateTime arrivalDateTime = departureDateTime.plusMinutes(duration);
+            System.out.println("Arrival Date Time: " + arrivalDateTime);
+            return arrivalDateTime;
+        } else {
+            System.out.println("Departure Date Time is not set.");
+            return null;
+        }
+    }
 }
+
+
 

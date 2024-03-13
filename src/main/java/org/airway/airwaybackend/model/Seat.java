@@ -25,4 +25,14 @@ public class Seat {
     private int noOfOccupiedSeats;
     @OneToMany
     private List<SeatList> seatLists;
+
+    public String getSeatCode() {
+        return className.getClassName() + "-" + seatAlphabet;
+    }
+
+    public int getNumberOfSeat() {
+        return totalNumberOfSeat;
+    }
 }
+
+
