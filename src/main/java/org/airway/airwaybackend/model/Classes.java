@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.airway.airwaybackend.enums.FlightStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,7 +22,7 @@ public class Classes {
     private BigDecimal taxFee;
     private BigDecimal surchargeFee;
     private BigDecimal serviceCharge;
-    private BigDecimal basePrice;
+    private BigDecimal baseFare;
     private BigDecimal totalPrice;
     @OneToOne
     private Seat seat;
