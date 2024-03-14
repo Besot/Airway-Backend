@@ -5,7 +5,9 @@ import org.airway.airwaybackend.dto.BookingFlightDto;
 import org.airway.airwaybackend.dto.BookingRequestDto;
 import org.airway.airwaybackend.dto.PassengerDTo;
 import org.airway.airwaybackend.enums.BookingStatus;
+import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.exception.FlightNotFoundException;
+import org.airway.airwaybackend.exception.SeatListNotFoundException;
 import org.airway.airwaybackend.model.*;
 import org.airway.airwaybackend.repository.*;
 import org.airway.airwaybackend.model.Booking;
@@ -88,12 +90,23 @@ public class BookingServiceImpl implements BookingService {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 String username = authentication.getName();
                 User user = userRepository.findUserByEmail(username);
-                if (user == null && passenger.getContact()) {
+                if (user == null) {
                     passenger.setPassengerCode(generateMemberShip("GU"));
-                    booking.setPassengerCode(passenger.getPassengerCode());
-                } else if (user !=null) {
+                    if(passenger.getContact().equals(true)) {
+                        booking.setPassengerCode(passenger.getPassengerCode());
+                    }
+                } else if (user !=null && user.getUserRole().equals(Role.PASSENGER)) {
                     booking.setUserId(user);
-
+                    passenger.setPassengerCode(generateMemberShip("GU"));
+                    if(passenger.getContact().equals(true)) {
+                        booking.setPassengerCode(user.getMembershipNo());
+                    }
+                }else if (user != null && user.getUserRole().equals(Role.ADMIN)){
+                    booking.setUserId(user);
+                    passenger.setPassengerCode(generateMemberShip("GU"));
+                    if(passenger.getContact().equals(true)) {
+                        booking.setPassengerCode(passenger.getPassengerCode());
+                    }
                 }
                 passengers.add(passenger);
             }
@@ -102,9 +115,12 @@ public class BookingServiceImpl implements BookingService {
             List<BookingFlight> bookingFlights = new ArrayList<>();
             for (BookingFlightDto bookingFlightDto : bookingFlightDtos) {
                 BookingFlight bookingFlight = new BookingFlight();
-                Flight flight = flightRepository.findById(bookingFlightDto.getFlightId()).orElseThrow(() -> new FlightNotFoundException("flight not available"));
-                bookingFlight.setFlight(flight);
                 Classes classes = classesRepository.findById(bookingFlightDto.getClassId()).orElseThrow(() -> new ClassNotFoundException("classes not found"));
+               if(classes.getSeat().getAvailableSeat()==0){
+                   throw new SeatListNotFoundException("no Seat is available");
+               }
+                Flight flight= classes.getFlight();
+                bookingFlight.setFlight(flight);
                 bookingFlight.setBaseFare(calculateFare(classes.getBaseFare(), savedPassengers.size()));
                 bookingFlight.setBaggageAllowance(String.valueOf(calculateBaggageAllowance(classes.getBaggageAllowance(), savedPassengers.size())));
                 bookingFlight.setServiceCharge(calculateFare(classes.getServiceCharge(), savedPassengers.size()));
@@ -133,9 +149,10 @@ public class BookingServiceImpl implements BookingService {
 
             bookingRepository.save(booking);
             return "booking successful";
-        }catch (FlightNotFoundException ex){
-
-            return "flight not available";
+        }catch (ClassNotFoundException ex) {
+            return "Class not available";
+        }catch (SeatListNotFoundException ex){
+            return "Seat not Available";
         }catch (Exception e){
             e.printStackTrace();
             return "error occurred in the process";
@@ -160,7 +177,6 @@ public class BookingServiceImpl implements BookingService {
     public String generateBookingReferenceNumber (Set<String> usedNumber){
         String prefix = "XY";
         int digit = 6;
-        StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
 
         String randomNumber;

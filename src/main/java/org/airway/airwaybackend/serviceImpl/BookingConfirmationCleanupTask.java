@@ -1,4 +1,4 @@
-package org.airway.airwaybackend.service;
+package org.airway.airwaybackend.serviceImpl;
 import org.airway.airwaybackend.enums.BookingStatus;
 import org.airway.airwaybackend.model.Booking;
 import org.airway.airwaybackend.repository.BookingFlightRepository;
