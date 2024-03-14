@@ -6,7 +6,6 @@ import org.airway.airwaybackend.dto.BookingRequestDto;
 import org.airway.airwaybackend.dto.PassengerDTo;
 import org.airway.airwaybackend.enums.BookingStatus;
 import org.airway.airwaybackend.enums.Role;
-import org.airway.airwaybackend.exception.FlightNotFoundException;
 import org.airway.airwaybackend.exception.SeatListNotFoundException;
 import org.airway.airwaybackend.model.*;
 import org.airway.airwaybackend.repository.*;
@@ -94,18 +93,22 @@ public class BookingServiceImpl implements BookingService {
                     passenger.setPassengerCode(generateMemberShip("GU"));
                     if(passenger.getContact().equals(true)) {
                         booking.setPassengerCode(passenger.getPassengerCode());
+                        booking.setPassengerContactEmail(passenger.getPassengerEmail());
                     }
                 } else if (user !=null && user.getUserRole().equals(Role.PASSENGER)) {
                     booking.setUserId(user);
                     passenger.setPassengerCode(generateMemberShip("GU"));
                     if(passenger.getContact().equals(true)) {
                         booking.setPassengerCode(user.getMembershipNo());
+                        booking.setPassengerContactEmail(passenger.getPassengerEmail());
                     }
                 }else if (user != null && user.getUserRole().equals(Role.ADMIN)){
                     booking.setUserId(user);
                     passenger.setPassengerCode(generateMemberShip("GU"));
                     if(passenger.getContact().equals(true)) {
                         booking.setPassengerCode(passenger.getPassengerCode());
+                        booking.setPassengerContactEmail(passenger.getPassengerEmail());
+
                     }
                 }
                 passengers.add(passenger);

@@ -45,6 +45,7 @@ public class Booking {
     private BigDecimal surchargeFee;
     private BigDecimal serviceCharge;
     private BigDecimal baseFare;
+    private String passengerContactEmail;
 
 
 }
