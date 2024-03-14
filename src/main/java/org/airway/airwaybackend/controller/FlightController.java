@@ -1,7 +1,7 @@
 package org.airway.airwaybackend.controller;
 
-import org.airway.airwaybackend.exception.AirlineNotFoundException;
-import org.airway.airwaybackend.exception.AirportNotFoundException;
+import org.airway.airwaybackend.dto.UpdateFlightDto;
+import org.airway.airwaybackend.exception.*;
 import org.airway.airwaybackend.dto.AddFlightDto;
 import org.airway.airwaybackend.dto.FlightSearchResponse;
 import org.airway.airwaybackend.enums.FlightDirection;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -118,4 +119,15 @@ public class FlightController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PutMapping("/update-flight/{flightId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateFlight(@PathVariable Long flightId, @RequestBody UpdateFlightDto updateFlightDto) {
+        try {
+            String response = flightService.updateFlight(flightId, updateFlightDto);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (FlightNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }
+

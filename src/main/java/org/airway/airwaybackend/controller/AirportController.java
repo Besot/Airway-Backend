@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/airports")
@@ -27,5 +28,7 @@ public class AirportController {
     public @ResponseBody Airport getAirportById(@PathVariable("iata-code") String iataCode) {
         return airportService.getAirportById(iataCode);
     }
+
+
 
 }

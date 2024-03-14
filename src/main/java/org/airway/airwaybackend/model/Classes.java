@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.airway.airwaybackend.enums.FlightStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,6 +32,28 @@ public class Classes {
     @OneToMany
     private List<Passenger> passengers;
 
+    public void setBasePrice(BigDecimal basePrice) {
+        this.baseFare = basePrice;
+    }
+
+    public void setFlightStatus(String flightStatus) {
+        if (flight != null && flightStatus != null) {
+            FlightStatus status = FlightStatus.valueOf(flightStatus);
+            flight.setFlightStatus(status);
+        }
+    }
+
+    public void setNumOfSeats(int numOfSeats) {
+        if (numOfSeats == 1) {
+            if (seat == null) {
+                seat = new Seat();
+            }
+        } else {
+
+        }
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -39,3 +62,4 @@ public class Classes {
         return result;
     }
 }
+
