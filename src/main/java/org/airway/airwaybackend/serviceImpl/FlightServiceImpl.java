@@ -134,7 +134,7 @@ public class FlightServiceImpl implements FlightService {
                 ClassDto classDto = new ClassDto();
                 classDto.setId(classes.getId());
                 classDto.setClassName(classes.getClassName());
-                classDto.setTotalPrice(classes.getTotalPrice());
+                classDto.setTotalPrice(classes.getTotalFare());
                 classDto.setAvailableSeat(classes.getSeat().getAvailableSeat());
                 classDtos.add(classDto);
             }
@@ -278,7 +278,7 @@ public class FlightServiceImpl implements FlightService {
                 saveClasses.setTaxFee(classes.getTaxFee());
                 saveClasses.setSurchargeFee(classes.getSurchargeFee());
                 saveClasses.setServiceCharge(classes.getServiceCharge());
-                saveClasses.setTotalPrice(classes.getBaseFare().add( classes.getTaxFee()).add (classes.getSurchargeFee() ). add(classes.getServiceCharge()));
+                saveClasses.setTotalFare(classes.getBaseFare().add( classes.getTaxFee()).add (classes.getSurchargeFee() ). add(classes.getServiceCharge()));
                 saveClasses.setFlight(saveFlight);
                 Classes savedClasses = classesRepository.save(saveClasses);
                 classes.getSeat().setClassName(savedClasses);
@@ -431,12 +431,6 @@ public class FlightServiceImpl implements FlightService {
             flight.setDeparturePort(departurePort);
         }
 
-
-
-
-
-
-
         Flight saveFlight = flightRepository.save(flight);
 
         List<Classes> existingClassesList = flight.getClasses();
@@ -444,13 +438,12 @@ public class FlightServiceImpl implements FlightService {
         if (!(updatedClassesList.isEmpty()) && !(existingClassesList.isEmpty())) {
             for (int i = 0; i < existingClassesList.size(); i++) {
                 existingClassesList.get(i).setClassName(updatedClassesList.get(i).getClassName());
-                existingClassesList.get(i).setBasePrice(updatedClassesList.get(i).getBaseFare());
+                existingClassesList.get(i).setBaseFare(updatedClassesList.get(i).getBaseFare());
                 existingClassesList.get(i).setBaggageAllowance(updatedClassesList.get(i).getBaggageAllowance());
                 existingClassesList.get(i).setTaxFee(updatedClassesList.get(i).getTaxFee());
                 existingClassesList.get(i).setSurchargeFee(updatedClassesList.get(i).getSurchargeFee());
                 existingClassesList.get(i).setServiceCharge(updatedClassesList.get(i).getServiceCharge());
-                existingClassesList.get(i).setTotalPrice(updatedClassesList.get(i).getBaseFare().add(updatedClassesList.get(i).getTaxFee()).add(updatedClassesList.get(i).getSurchargeFee()).add(updatedClassesList.get(i).getServiceCharge()));
-                existingClassesList.get(i).setNumOfSeats(updatedClassesList.get(i).getSeat().getTotalNumberOfSeat());
+                existingClassesList.get(i).setTotalFare(updatedClassesList.get(i).getBaseFare().add(updatedClassesList.get(i).getTaxFee()).add(updatedClassesList.get(i).getSurchargeFee()).add(updatedClassesList.get(i).getServiceCharge()));
                 existingClassesList.get(i).setFlight(saveFlight);
                 Classes savedClasses = classesRepository.save(existingClassesList.get(i));
                 existingClassesList.get(i).getSeat().setClassName(savedClasses);
