@@ -11,6 +11,6 @@ import java.math.BigDecimal;
 public class ClassDto {
     private Long id;
     private String className;
-    private BigDecimal totalPrice;
+    private BigDecimal baseFare;
     private int availableSeat;
 }

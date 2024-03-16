@@ -26,7 +26,7 @@ public class Passenger {
     private Gender gender;
     private String passengerEmail;
     private String title;
-    private String Nationality;
+    private String nationality;
     private String phoneNumber;
     @OneToMany
     private List<Ticket> ticket;

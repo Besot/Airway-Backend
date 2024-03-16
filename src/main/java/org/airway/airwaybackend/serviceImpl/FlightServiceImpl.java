@@ -134,7 +134,7 @@ public class FlightServiceImpl implements FlightService {
                 ClassDto classDto = new ClassDto();
                 classDto.setId(classes.getId());
                 classDto.setClassName(classes.getClassName());
-                classDto.setTotalPrice(classes.getTotalFare());
+                classDto.setBaseFare(classes.getBaseFare());
                 classDto.setAvailableSeat(classes.getSeat().getAvailableSeat());
                 classDtos.add(classDto);
             }

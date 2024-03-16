@@ -35,7 +35,7 @@ class BookingControllerTest {
         ResponseEntity<String> responseEntity = bookingController.BookFlight(bookingRequestDto);
 
 
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(responseMessage, responseEntity.getBody());
 
         verify(bookingServiceImp, times(1)).bookFlight(bookingRequestDto);

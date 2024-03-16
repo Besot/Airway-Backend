@@ -18,6 +18,8 @@ public class BookingFlight {
     @ManyToOne
     @JoinColumn(name = "flight_no")
     private Flight flight;
+    @OneToOne
+    private PNR pnr;
     @ManyToOne
     private Classes classes;
     private String baggageAllowance;

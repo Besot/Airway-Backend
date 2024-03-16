@@ -15,8 +15,8 @@ public class PNR {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    @ManyToOne
-    private Flight flight;
+    @OneToOne
+    private BookingFlight bookingFlight;
     @ManyToMany
     private List<Passenger> passengerList;
     private String PNRCode;

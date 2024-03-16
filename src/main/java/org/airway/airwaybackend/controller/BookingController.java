@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/booking")
+@CrossOrigin(origins = "http://localhost:5173" )
 public class BookingController {
 
         private BookingService bookingService;
@@ -30,6 +31,6 @@ public class BookingController {
     @PostMapping("/booking-flight")
     public ResponseEntity<String> BookFlight(@RequestBody BookingRequestDto bookingRequestDto) {
         String response = bookingService.bookFlight(bookingRequestDto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

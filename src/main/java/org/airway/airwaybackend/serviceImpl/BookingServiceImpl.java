@@ -14,7 +14,6 @@ import org.airway.airwaybackend.repository.BookingRepository;
 import org.airway.airwaybackend.service.BookingService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,13 +34,15 @@ public class BookingServiceImpl implements BookingService {
     private final FlightRepository flightRepository;
     private final ClassesRepository classesRepository;
     private final BookingFlightRepository bookingFlightRepository;
-    public BookingServiceImpl(BookingRepository bookingRepository, PassengerRepository passengerRepository, UserRepository userRepository, FlightRepository flightRepository, ClassesRepository classesRepository, BookingFlightRepository bookingFlightRepository) {
+    private final PNRServiceImpl pnrServiceImpl;
+    public BookingServiceImpl(BookingRepository bookingRepository, PassengerRepository passengerRepository, UserRepository userRepository, FlightRepository flightRepository, ClassesRepository classesRepository, BookingFlightRepository bookingFlightRepository, PNRServiceImpl pnrServiceImpl) {
         this.bookingRepository = bookingRepository;
         this.passengerRepository = passengerRepository;
         this.userRepository = userRepository;
         this.flightRepository = flightRepository;
         this.classesRepository = classesRepository;
         this.bookingFlightRepository = bookingFlightRepository;
+        this.pnrServiceImpl = pnrServiceImpl;
     }
 
     @Override
@@ -61,7 +62,8 @@ public class BookingServiceImpl implements BookingService {
     public String bookFlight(BookingRequestDto bookingRequestDto) {
         try {
             Booking booking = new Booking();
-
+            List<PNR> pnrList = new ArrayList<>();
+            PNR pnr;
             booking.setBookingStatus(BookingStatus.PENDING);
             Booking savedBooking = bookingRepository.save(booking);
 
@@ -135,11 +137,19 @@ public class BookingServiceImpl implements BookingService {
                 bookingFlights.add(bookingFlight);
             }
             List<BookingFlight> savedBookingFlight = bookingFlightRepository.saveAll(bookingFlights);
+            for(BookingFlight bookingFlight : savedBookingFlight){
+                pnr=  pnrServiceImpl.generatePNRForEachPassengerAndFlight(bookingFlight, savedPassengers);
+                pnrList.add(pnr);
+                bookingFlight.setPnr(pnr);
+                bookingFlightRepository.save(bookingFlight);
+            }
+
             booking.setBookingFlights(savedBookingFlight);
             booking.setPassengers(savedPassengers);
             booking.setBookingFlights(savedBookingFlight);
             Set<String> usedNumbers = new HashSet<>();
             booking.setBookingReferenceCode(generateBookingReferenceNumber(usedNumbers));
+            booking.setPnrList(pnrList);
             booking.setPay(FALSE);
             booking.setTripType(bookingRequestDto.getTripType());
             booking.setTotalFare(getALLtotalFare(savedBookingFlight));
