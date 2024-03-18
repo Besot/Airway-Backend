@@ -1,6 +1,7 @@
 package org.airway.airwaybackend.service;
 
 import org.airway.airwaybackend.dto.AddFlightDto;
+import org.airway.airwaybackend.dto.FlightSearchDto;
 import org.airway.airwaybackend.dto.FlightSearchResponse;
 import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.model.Airport;
@@ -29,4 +30,5 @@ public interface FlightService {
     String generateRandomLetters(int length);
     List<SeatList> generateSeatList (Seat seat);
 
+    FlightSearchDto getFlightDetails(Long flightId);
 }

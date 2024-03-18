@@ -1,9 +1,7 @@
 package org.airway.airwaybackend.controller;
 
-import org.airway.airwaybackend.dto.UpdateFlightDto;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.exception.*;
-import org.airway.airwaybackend.dto.AddFlightDto;
-import org.airway.airwaybackend.dto.FlightSearchResponse;
 import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.dto.AddFlightDto;
 import org.airway.airwaybackend.exception.AirlineNotFoundException;
@@ -129,6 +127,11 @@ public class FlightController {
         } catch (FlightNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{Id}")
+    public ResponseEntity<FlightSearchDto> getFlightDetails(@PathVariable Long Id) {
+        return new ResponseEntity<>(flightService.getFlightDetails(Id),HttpStatus.OK) ;
     }
 }
 
