@@ -21,8 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -119,14 +117,14 @@ public class FlightServiceImpl implements FlightService {
             flightDTO.setId(flight.getId());
             flightDTO.setFlightStatus(flight.getFlightStatus());
             flightDTO.setFlightNo(flight.getFlightNo());
-            flightDTO.setAirline(flight.getAirline().getName());
+            flightDTO.setAirline(flight.getAirline());
             flightDTO.setArrivalDate(flight.getArrivalDate());
             flightDTO.setDepartureDate(flight.getDepartureDate());
             flightDTO.setArrivalTime(flight.getArrivalTime());
             flightDTO.setDepartureTime(flight.getDepartureTime());
             flightDTO.setDuration(flight.getDuration());
-            flightDTO.setArrivalPortName(flight.getArrivalPort().getName());
-            flightDTO.setDeparturePortName(flight.getDeparturePort().getName());
+            flightDTO.setArrivalPortName(flight.getArrivalPort());
+            flightDTO.setDeparturePortName(flight.getDeparturePort());
             flightDTO.setFlightDirection(flight.getFlightDirection());
             List<ClassDto> classDtos = new ArrayList<>();
 
@@ -467,6 +465,52 @@ public class FlightServiceImpl implements FlightService {
             System.out.println("Departure Date Time is not set.");
             return null;
         }
+    }
+    @Override
+    public FlightSearchDto getFlightDetails(Long flightId) {
+        Flight flight = flightRepository.findById(flightId)
+                .orElseThrow(() -> new FlightNotFoundException("Flight not found with id: " + flightId));
+        return mapFlightToFlightDetailsDTO(flight);
+    }
+
+    private FlightSearchDto mapFlightToFlightDetailsDTO(Flight flight) {
+        FlightSearchDto flightDTO = new FlightSearchDto();
+        flightDTO.setId(flight.getId());
+        flightDTO.setFlightDirection(flight.getFlightDirection());
+        flightDTO.setFlightNo(flight.getFlightNo());
+        flightDTO.setAirline(flight.getAirline());
+        flightDTO.setArrivalDate(flight.getArrivalDate());
+        flightDTO.setDepartureDate(flight.getDepartureDate());
+        flightDTO.setArrivalTime(flight.getArrivalTime());
+        flightDTO.setReturnDate(flight.getReturnDate());
+        flightDTO.setReturnTime(flight.getReturnTime());
+        flightDTO.setDepartureTime(flight.getDepartureTime());
+        flightDTO.setDuration(flight.getDuration());
+        flightDTO.setArrivalPortName(flight.getArrivalPort());
+        flightDTO.setDeparturePortName(flight.getDeparturePort());
+        List<ClassDto> classDtoList = getClassDtos(flight);
+        flightDTO.setClasses(classDtoList);
+        flightDTO.setTotalSeat(flight.getTotalSeat());
+        flightDTO.setAvailableSeat(flight.getAvailableSeat());
+        flightDTO.setNoOfChildren(flight.getNoOfChildren());
+        flightDTO.setNoOfAdult(flight.getNoOfAdult());
+        flightDTO.setNoOfInfant(flight.getNoOfInfant());
+
+        return flightDTO;
+    }
+
+    private static List<ClassDto> getClassDtos(Flight flight) {
+        List<ClassDto> classDtoList = new ArrayList<>();
+        flight.getClasses().forEach(classes -> {
+
+            ClassDto classDto = new ClassDto();
+            classDto.setId(classes.getId());
+            classDto.setClassName(classes.getClassName());
+            classDto.setAvailableSeat(classes.getSeat().getAvailableSeat());
+            classDto.setBaseFare(classes.getBaseFare());
+            classDtoList.add(classDto);
+        });
+        return classDtoList;
     }
 }
 
