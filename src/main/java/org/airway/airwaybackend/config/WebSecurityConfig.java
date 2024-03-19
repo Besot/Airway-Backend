@@ -75,7 +75,7 @@ public class WebSecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpRequests ->
-                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}", "/api/v1/flights/add-flight").hasAuthority(String.valueOf(Role.ADMIN))
+                        httpRequests.requestMatchers("/api/v1/flights/delete-flight/{Id}", "/api/v1/flights/add-flight", "/api/v1/booking/edit-bookings/{id}").hasAuthority(String.valueOf(Role.ADMIN))
                                 .requestMatchers(
 
                                      
