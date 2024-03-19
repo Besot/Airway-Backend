@@ -1,6 +1,9 @@
 package org.airway.airwaybackend.service;
 
+import org.airway.airwaybackend.dto.BookingEditingDto;
 import org.airway.airwaybackend.dto.BookingRequestDto;
+import org.airway.airwaybackend.exception.ClassNotFoundException;
+import org.airway.airwaybackend.exception.UnauthorizedAccessException;
 import org.airway.airwaybackend.model.BookingFlight;
 
 import java.math.BigDecimal;
@@ -30,4 +33,6 @@ public interface BookingService {
     String calculateBaggageAllowance(String weightString, double factor);
     String calculateAllBaggageAllowances(List<BookingFlight> flights, Function<BookingFlight, String> propertyExtractor);
     BigDecimal calculateTotal(List<BookingFlight> flights, Function<BookingFlight, BigDecimal> propertyExtractor);
+
+    String editBookingById(Long id, BookingEditingDto bookingEditingDto) throws UnauthorizedAccessException, ClassNotFoundException;
 }
