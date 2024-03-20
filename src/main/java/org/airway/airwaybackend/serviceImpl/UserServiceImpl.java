@@ -206,7 +206,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setConfirmPassword(passwordEncoder.encode(signupDto.getConfirmPassword()));
         user.setFirstName(signupDto.getFirstName());
         user.setLastName(signupDto.getLastName());
-        user.setPassportNumber(signupDto.getPhoneNumber());
+        user.setCountry(signupDto.getCountry());
+        user.setPhoneNumber(signupDto.getPhoneNumber());
         user.setEmail(signupDto.getEmail());
         user.setUserRole(Role.PASSENGER);
         user.setMembershipNo(generateMemberShip("ME"));
