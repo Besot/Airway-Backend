@@ -45,12 +45,12 @@ class FlightServiceImplTest {
         Classes classes = new Classes();
         classes.setId(1L);
         classes.setClassName("Economy");
-        classes.setTotalPrice(BigDecimal.valueOf(100000));
+        classes.setTotalFare(BigDecimal.valueOf(100000));
 
         Classes classes1 = new Classes();
         classes.setId(2L);
         classes.setClassName("Business");
-        classes.setTotalPrice(BigDecimal.valueOf(100000));
+        classes.setTotalFare(BigDecimal.valueOf(100000));
         classesList.add(classes);
         classesList.add(classes1);
 

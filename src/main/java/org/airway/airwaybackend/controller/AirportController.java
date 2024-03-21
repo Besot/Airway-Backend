@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/airports")
+@CrossOrigin(origins = "http://localhost:5173" )
 public class AirportController {
 
     @Autowired
@@ -19,7 +20,7 @@ public class AirportController {
 
     private static final Logger logger = LoggerFactory.getLogger(AirportController.class);
 
-    @GetMapping
+    @GetMapping("/all-airports")
     public @ResponseBody List<Airport> getAllAirports() {
         return airportService.getAllAirports();
     }
@@ -28,6 +29,7 @@ public class AirportController {
     public @ResponseBody Airport getAirportById(@PathVariable("iata-code") String iataCode) {
         return airportService.getAirportById(iataCode);
     }
+
 
 
 

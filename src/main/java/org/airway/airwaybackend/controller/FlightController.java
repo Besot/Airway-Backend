@@ -1,9 +1,7 @@
 package org.airway.airwaybackend.controller;
 
-import org.airway.airwaybackend.dto.UpdateFlightDto;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.exception.*;
-import org.airway.airwaybackend.dto.AddFlightDto;
-import org.airway.airwaybackend.dto.FlightSearchResponse;
 import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.dto.AddFlightDto;
 import org.airway.airwaybackend.exception.AirlineNotFoundException;
@@ -25,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/flights")
+@CrossOrigin(origins = "http://localhost:5173" )
 public class FlightController {
     private final FlightServiceImpl flightService;
 
@@ -129,11 +128,14 @@ public class FlightController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-    @PostMapping("/confirm/{Id}")
-    public ResponseEntity<String> confirmFlight(@PathVariable Long Id){
+  @PostMapping("/confirm/{Id}")
+    public ResponseEntity<String> confirmFlight(@PathVariable Long Id) {
         String response = flightService.confirmFlight(Id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @GetMapping("/{Id}")
+    public ResponseEntity<FlightSearchDto> getFlightDetails(@PathVariable Long Id) {
+        return new ResponseEntity<>(flightService.getFlightDetails(Id), HttpStatus.OK);
     }
 }
 

@@ -6,37 +6,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Classes {
+public class BookingFlight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String className;
+    @ManyToOne
+    @JoinColumn(name = "flight_no")
+    private Flight flight;
+    @OneToOne
+    private PNR pnr;
+    @ManyToOne
+    private Classes classes;
     private String baggageAllowance;
     private BigDecimal taxFee;
     private BigDecimal surchargeFee;
     private BigDecimal serviceCharge;
     private BigDecimal baseFare;
     private BigDecimal totalFare;
-    @OneToOne
-    private Seat seat;
+
     @ManyToOne
-    private Flight flight;
-    @OneToMany
-    private List<Passenger> passengers;
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Objects.hash(id);
-        return result;
-    }
+    private Booking booking;
 }
-

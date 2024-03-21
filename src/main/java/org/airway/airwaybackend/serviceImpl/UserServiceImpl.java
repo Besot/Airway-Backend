@@ -30,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -208,6 +209,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassportNumber(signupDto.getPhoneNumber());
         user.setEmail(signupDto.getEmail());
         user.setUserRole(Role.PASSENGER);
+        user.setMembershipNo(generateMemberShip("ME"));
         return userRepository.save(user);
     }
   
@@ -255,6 +257,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         verificationToken.setToken(UUID.randomUUID().toString());
         verificationTokenRepository.save(verificationToken);
         return verificationToken;
+    }
+
+    public String generateMemberShip (String prefix) {
+        Random random = new Random();
+        int suffixLength = 4;
+        StringBuilder suffixBuilder = new StringBuilder();
+        for (int i = 0; i < suffixLength; i++) {
+            suffixBuilder.append(random.nextInt(10));
+        }
+        return prefix + suffixBuilder.toString();
     }
 
 }

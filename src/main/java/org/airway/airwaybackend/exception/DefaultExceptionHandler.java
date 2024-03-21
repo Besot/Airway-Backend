@@ -37,6 +37,13 @@ public class DefaultExceptionHandler {
 
     }
 
+    @ExceptionHandler(ClassNotFoundException.class)
+    public ResponseEntity<String> handleClassNotFound(
+            ClassNotFoundException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+
+    }
+
     private ResponseEntity<ApiError> buildErrorResponse(
             HttpServletRequest request, HttpStatus status, String message, List<ValidationError> errors) {
         ApiError apiError = new ApiError(
