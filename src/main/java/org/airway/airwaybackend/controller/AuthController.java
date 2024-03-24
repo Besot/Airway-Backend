@@ -1,13 +1,8 @@
 package org.airway.airwaybackend.controller;
 
-import org.airway.airwaybackend.dto.ChangePasswordDto;
-import org.airway.airwaybackend.dto.LoginDto;
-import org.airway.airwaybackend.model.User;
+
 import jakarta.servlet.http.HttpServletRequest;
-import org.airway.airwaybackend.dto.EmailSenderDto;
-import org.airway.airwaybackend.dto.LoginDto;
-import org.airway.airwaybackend.dto.ResetPasswordDto;
-import org.airway.airwaybackend.dto.SignupDto;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.event.RegistrationCompleteEvent;
 import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.serviceImpl.EmailServiceImpl;
@@ -17,7 +12,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("/api/v1/auth")
@@ -59,7 +53,7 @@ String result = userService.logInUser(loginDto);
     public ResponseEntity <String> changePassword(@RequestBody ChangePasswordDto passwordDto) {
         return new ResponseEntity<>(userService.changeUserPassword(passwordDto), HttpStatus.OK);
     }
-  
+
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody EmailSenderDto passwordDto, HttpServletRequest request){
         userService.forgotPassword(passwordDto, request);
