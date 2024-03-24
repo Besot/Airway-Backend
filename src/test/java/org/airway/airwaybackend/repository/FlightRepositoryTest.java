@@ -27,12 +27,12 @@ class FlightRepositoryTest {
         int noOfChildren = 1;
         int noOfInfant = 0;
 
-        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
-                departurePort, arrivalPort, departureDate, noOfAdult, noOfChildren, noOfInfant))
+        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(
+                departurePort, arrivalPort, departureDate))
                 .thenReturn(Optional.of(List.of(new Flight(), new Flight())));
 
-       Optional< List<Flight>> flights = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
-                departurePort, arrivalPort, departureDate, noOfAdult, noOfChildren, noOfInfant);
+       Optional< List<Flight>> flights = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(
+                departurePort, arrivalPort, departureDate);
 
         assert flights.isPresent();
         List<Flight> flightList = flights.get();
@@ -53,12 +53,12 @@ class FlightRepositoryTest {
         int noOfInfant = 0;
 
         when(flightRepository
-                .searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
-                        departurePort, arrivalPort, returnDate, noOfAdult, noOfChildren, noOfInfant))
+                .searchByDeparturePortAndArrivalPortAndDepartureDate(
+                        departurePort, arrivalPort, returnDate))
                 .thenReturn(Optional.of(List.of(new Flight(), new Flight())));
 
-       Optional< List<Flight> >flights = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(
-                departurePort, arrivalPort, returnDate, noOfAdult, noOfChildren, noOfInfant);
+       Optional< List<Flight> >flights = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(
+                departurePort, arrivalPort, returnDate);
 
 
         assert flights.isPresent();

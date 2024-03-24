@@ -89,9 +89,9 @@ class FlightServiceImplTest {
 
         flight1.setClasses(classesList);
         flight2.setClasses(classesList);
-        when (flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(departurePort,arrivalPort,departureDate,noOfAdult,noOfChildren,noOfInfant)).thenReturn(Optional.of(Collections.singletonList(flight1)));
-        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(departurePort,arrivalPort,returnDate2,noOfAdult,noOfChildren,noOfInfant)).thenReturn(Optional.of(Collections.singletonList(flight2)));
-        Map< String,FlightSearchResponse> flightResponse = flightServiceImp.searchAvailableFlight(departurePort,arrivalPort,departureDate, null, null,noOfAdult,noOfChildren, noOfInfant);
+        when (flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(departurePort,arrivalPort,departureDate)).thenReturn(Optional.of(Collections.singletonList(flight1)));
+        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(departurePort,arrivalPort,returnDate2)).thenReturn(Optional.of(Collections.singletonList(flight2)));
+        Map< String,FlightSearchResponse> flightResponse = flightServiceImp.searchAvailableFlight(departurePort,arrivalPort,departureDate, null, null);
 
 
         assertNotNull(flightDTOList);
@@ -119,11 +119,11 @@ class FlightServiceImplTest {
         FlightDirection flightDirection1 = FlightDirection.ROUND_TRIP;
 
 
-        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(departurePort,arrivalPort,departureDate,noOfAdult,noOfChildren,noOfInfant)).thenReturn(Optional.of(Collections.emptyList()));
-        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(departurePort,arrivalPort,returnDate2,noOfAdult,noOfChildren,noOfInfant)).thenReturn(Optional.of(Collections.emptyList()));
+        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(departurePort,arrivalPort,departureDate)).thenReturn(Optional.of(Collections.emptyList()));
+        when(flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(departurePort,arrivalPort,returnDate2)).thenReturn(Optional.of(Collections.emptyList()));
 
         assertThrows(FlightNotFoundException.class, ()->
-                flightServiceImp.searchAvailableFlight(departurePort,arrivalPort,departureDate,flightDirection1,returnDate2,noOfAdult,noOfChildren,noOfInfant));
+                flightServiceImp.searchAvailableFlight(departurePort,arrivalPort,departureDate,flightDirection1,returnDate2));
     }
 
 }

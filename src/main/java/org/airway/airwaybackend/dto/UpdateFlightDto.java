@@ -23,9 +23,6 @@ public class UpdateFlightDto {
     private Airline airline;
     private FlightStatus flightStatus;
     private Integer totalSeat;
-    private Integer noOfAdult;
-    private Integer noOfChildren;
-    private Integer noOfInfant;
     private Airport arrivalPort;
     private Airport departurePort;
     private List<Classes> classes;
@@ -33,7 +30,6 @@ public class UpdateFlightDto {
     private LocalDate arrivalDate;
     private LocalTime departureTime;
     private LocalTime arrivalTime;
-    private LocalTime returnTime;
     private String arrivalPortName;
     private String departurePortName;
     private User user;

@@ -19,6 +19,7 @@ import java.util.List;
 @Entity
 @Builder
 public class Flight {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +34,6 @@ public class Flight {
     private LocalTime arrivalTime;
     private LocalTime departureTime;
     private long duration;
-    private LocalDate returnDate;
-    private LocalTime returnTime;
     @ManyToOne
     private Airport arrivalPort;
     @ManyToOne
@@ -43,9 +42,7 @@ public class Flight {
     private List<Classes> classes;
     private int totalSeat;
     private int availableSeat;
-    private int noOfChildren;
-    private int noOfAdult;
-    private int noOfInfant;
+    @JsonIgnore
     @ManyToOne
     private User user;
     @JsonIgnore

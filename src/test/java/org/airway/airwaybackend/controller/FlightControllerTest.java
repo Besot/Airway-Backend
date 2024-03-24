@@ -59,10 +59,10 @@ class FlightControllerTest {
 
 
         flightSearchResponse.setTotalFlights(flightSearchDtos.size());
-        when(flightServiceImpl.searchAvailableFlight(departurePort, arrivalPort, departureDate,flightDirection ,returnDate, noOfAdult,noOfChildren, noOfInfant))
+        when(flightServiceImpl.searchAvailableFlight(departurePort, arrivalPort, departureDate,flightDirection ,returnDate))
                 .thenReturn(flightSearchResponseMap);
 
-        ResponseEntity< Map<String, FlightSearchResponse>> responseEntity = flightController.getAvailableFlight(departurePort, arrivalPort, departureDate, flightDirection1,returnDate, noOfAdult, noOfChildren, noOfInfant);
+        ResponseEntity< Map<String, FlightSearchResponse>> responseEntity = flightController.getAvailableFlight(departurePort, arrivalPort, departureDate, flightDirection1,returnDate);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
