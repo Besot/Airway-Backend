@@ -78,8 +78,11 @@ public class WebSecurityConfig {
                         httpRequests
                                 .requestMatchers("/api/v1/flights/delete-flight/{Id}", "/api/v1/flights/add-flight", "/api/v1/booking/edit-bookings/{id}", "/api/v1/flights/update-flight/{flightId}", "/api/v1/flights/confirm/{Id}").hasAuthority(String.valueOf(Role.ADMIN))
                                 .requestMatchers(
-                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration", "/api/v1/auth/changePassword", "/api/v1/countries/get-all-countries", "/api/v1/countries/get-country/{id}", "/api/v1/countries/get-by-iso/{isoCode}","/api/v1/seat/get-SeatList/{seatId}","/api/v1/flights/departing-flights", "/api/v1/flights/returning-flights", "/api/v1/flights/all-returning-flights","/api/v1/flights/all-departing-flights", "/api/v1/booking/bookings", "/api/v1/booking/booking-flight","/api/v1/flights/{Id}")
-                                .permitAll()
+
+                                     
+
+                                        "/api/v1/auth/**","/api/v1/flights/availableFlight", "/api/v1/flights/fetch-all-flights", "/api/v1/auth/passenger-sign-up", "/api/v1/auth/verifyRegistration", "/api/v1/auth/changePassword", "/api/v1/countries/get-all-countries", "/api/v1/countries/get-country/{id}", "/api/v1/countries/get-by-iso/{isoCode}","/api/v1/seat/get-SeatList/{seatId}","/api/v1/flights/departing-flights", "/api/v1/flights/returning-flights", "/api/v1/flights/all-returning-flights","/api/v1/flights/all-departing-flights", "/api/v1/booking/bookings", "/api/v1/booking/booking-flight","/api/v1/flights/{Id}").permitAll()
+
                                 .requestMatchers(
                                         "/airports/**").authenticated())
                 .sessionManagement(sessionManagement ->

@@ -25,8 +25,6 @@ public class AddFlightDto {
     private LocalDate departureDate;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
-    private LocalDate returnDate;
-    private LocalTime returnTime;
     private long duration;
     private String arrivalPortName;
     private String departurePortName;
@@ -35,7 +33,5 @@ public class AddFlightDto {
     private Integer totalSeat;
     private FlightStatus flightStatus;
     private Integer availableSeat;
-    private Integer noOfChildren;
-    private Integer noOfAdult;
-    private Integer noOfInfant;
+
 }

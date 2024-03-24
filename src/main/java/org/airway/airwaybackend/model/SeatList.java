@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class SeatList {
     @ManyToOne
     private Seat seat;
     private String seatLabel;
-    @OneToOne
+    @ManyToOne
     private Passenger assignedPerson;
     private Boolean occupied;
 }

@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -28,6 +29,7 @@ public class Airport {
     private String operationalHrs;
     private String state;
 
+@JsonIgnore
     @ManyToMany(mappedBy = "airports", fetch = FetchType.EAGER)
     private Set<Airline> airlines;
 
@@ -35,11 +37,4 @@ public class Airport {
     public Airport(String value, String value1, String value2, String value3, String value4, String value5) {
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + Objects.hash(iataCode);
-        return result;
-    }
 }

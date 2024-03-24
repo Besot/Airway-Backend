@@ -16,12 +16,11 @@ import java.util.Map;
 
 public interface FlightService {
     String deleteFlight(Long Id);
-    Map<String, FlightSearchResponse> searchAvailableFlight(Airport departurePort, Airport arrivalPort, LocalDate departureDate, FlightDirection flightDirection, LocalDate returnDate, int noOfAdult, int noOfChildren, int noOfInfant) ;
-     FlightSearchResponse getReturningFlights(Airport departurePort, Airport arrivalPort, LocalDate returnDate, int noOfAdult, int noOfChildren, int noOfInfant);
-     FlightSearchResponse getAllReturningFlights(Airport departurePort, Airport arrivalPort);
-     FlightSearchResponse getAllDepartingFlights(Airport departurePort, Airport arrivalPort) ;
-     FlightSearchResponse getDepartingFlights(Airport departurePort, Airport arrivalPort, LocalDate departureDate, int noOfAdult, int noOfChildren, int noOfInfant);
-
+    Map<String, FlightSearchResponse> searchAvailableFlight(Airport departurePort, Airport arrivalPort, LocalDate departureDate, FlightDirection flightDirection, LocalDate returnDate) ;
+    public FlightSearchResponse getReturningFlights(Airport departurePort, Airport arrivalPort, LocalDate returnDate);
+    public List<FlightSearchDto> getAllReturningFlights(Airport departurePort, Airport arrivalPort);
+    List<FlightSearchDto> getAllDepartingFlights(Airport departurePort, Airport arrivalPort);
+      FlightSearchResponse getDepartingFlights(Airport departurePort, Airport arrivalPort, LocalDate departureDate);
     Page<Flight> getAllFlights(int pageNo, int pageSize);
     public int getTotalNumberOfFlights();
     String addNewFlight(AddFlightDto flightDto);

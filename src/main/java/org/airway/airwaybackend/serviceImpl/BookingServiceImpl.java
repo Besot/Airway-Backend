@@ -103,7 +103,7 @@ public class BookingServiceImpl implements BookingService {
                     }
                 } else if (user != null && user.getUserRole().equals(Role.PASSENGER)) {
                     booking.setUserId(user);
-                    passenger.setPassengerCode(generateMemberShip("GU"));
+                    passenger.setPassengerCode(generateMemberShip("ME"));
                     if (passenger.getContact().equals(true)) {
                         booking.setPassengerCode(user.getMembershipNo());
                         booking.setPassengerContactEmail(passenger.getPassengerEmail());
@@ -142,9 +142,14 @@ public class BookingServiceImpl implements BookingService {
             }
             List<BookingFlight> savedBookingFlight = bookingFlightRepository.saveAll(bookingFlights);
             for (BookingFlight bookingFlight : savedBookingFlight) {
+                List<PNR> classPnrs = bookingFlight.getClasses().getPnrList();
                 pnr = pnrServiceImpl.generatePNRForEachPassengerAndFlight(bookingFlight, savedPassengers);
+               pnr.setPassengerList(savedPassengers);
+               pnr.setBookingFlight(bookingFlight);
                 pnrList.add(pnr);
                 bookingFlight.setPnr(pnr);
+                classPnrs.add(pnr);
+                classesRepository.save(bookingFlight.getClasses());
                 bookingFlightRepository.save(bookingFlight);
             }
 
