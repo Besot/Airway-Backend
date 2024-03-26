@@ -33,12 +33,6 @@ public class BookingController {
                 @RequestParam(defaultValue = "10") int pageSize) {
             return new ResponseEntity<>(bookingService.getAllBookings(pageNo, pageSize), HttpStatus.OK);
         }
-//
-//    @PostMapping("/booking-flight")
-//    public ResponseEntity<String> BookFlight(@RequestBody BookingRequestDto bookingRequestDto, final HttpServletRequest request) {
-//        String response = bookingService.bookFlight(bookingRequestDto, request);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
     @PutMapping("/edit-bookings/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> editBooking(@PathVariable Long id, @RequestBody BookingEditingDto bookingEditingDto) throws UnauthorizedAccessException, ClassNotFoundException {
