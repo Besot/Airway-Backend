@@ -6,6 +6,7 @@ import org.airway.airwaybackend.dto.BookingFlightDto;
 import org.airway.airwaybackend.dto.BookingRequestDto;
 import org.airway.airwaybackend.dto.PassengerDTo;
 import org.airway.airwaybackend.enums.BookingStatus;
+import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.exception.BookingNotFoundException;
 import org.airway.airwaybackend.exception.ClassNotFoundException;
@@ -110,7 +111,7 @@ public class BookingServiceImpl implements BookingService {
                     }
                 } else if (user != null && user.getUserRole().equals(Role.ADMIN)) {
                     booking.setUserId(user);
-                    passenger.setPassengerCode(generateMemberShip("GU"));
+                    passenger.setPassengerCode(generateMemberShip("AD"));
                     if (passenger.getContact().equals(true)) {
                         booking.setPassengerCode(passenger.getPassengerCode());
                         booking.setPassengerContactEmail(passenger.getPassengerEmail());
@@ -160,7 +161,11 @@ public class BookingServiceImpl implements BookingService {
             booking.setBookingReferenceCode(generateBookingReferenceNumber(usedNumbers));
             booking.setPnrList(pnrList);
             booking.setPay(FALSE);
-            booking.setTripType(bookingRequestDto.getTripType());
+            if(bookingFlights.size()==2){
+            booking.setTripType(FlightDirection.ROUND_TRIP);
+            } else if (bookingFlights.size()==1) {
+                booking.setTripType(FlightDirection.ONE_WAY);
+            }
             booking.setTotalFare(getALLtotalFare(savedBookingFlight));
             booking.setSurchargeFee(calculateTotal(savedBookingFlight, BookingFlight::getSurchargeFee));
             booking.setTaxFee(calculateTotal(savedBookingFlight, BookingFlight::getTaxFee));
