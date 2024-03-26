@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
-   Optional<List<Flight>> searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(Airport departurePort, Airport arrivalPort, LocalDate departureDate, int noOfAdult, int noOfChildren, int noOfInfant);
+   Optional<List<Flight>> searchByDeparturePortAndArrivalPortAndDepartureDate(Airport departurePort, Airport arrivalPort, LocalDate departureDate);
     Optional<List<Flight>> searchByDeparturePortAndArrivalPort(Airport departurePort, Airport arrivalPort);
 
 }

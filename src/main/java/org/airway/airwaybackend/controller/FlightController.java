@@ -19,11 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/flights")
-@CrossOrigin(origins = "http://localhost:5173" )
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class FlightController {
     private final FlightServiceImpl flightService;
 
@@ -45,13 +46,10 @@ public class FlightController {
             @RequestParam (required = false, name = "arrivalPort") Airport arrivalPort,
             @RequestParam (required = false, name = "departureDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate departureDate,
             @RequestParam (required = false, name = "flightDirection") FlightDirection flightDirection,
-            @RequestParam (required = false, name = "returnDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate returnDate,
-            @RequestParam(required = false, name = "noOfAdult") int noOfAdult,
-            @RequestParam(required = false, name = "noOfChildren") int noOfChildren,
-            @RequestParam (required = false, name = "noOfInfant") int noOfInfant
+            @RequestParam (required = false, name = "returnDate") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate returnDate
 
     ){
-        Map<String, FlightSearchResponse> availableFlight = flightService.searchAvailableFlight(departurePort,arrivalPort,departureDate,flightDirection,returnDate,noOfAdult, noOfChildren,noOfInfant);
+        Map<String, FlightSearchResponse> availableFlight = flightService.searchAvailableFlight(departurePort,arrivalPort,departureDate,flightDirection,returnDate);
         return ResponseEntity.ok(availableFlight);
     }
 
@@ -60,12 +58,10 @@ public class FlightController {
     public ResponseEntity<FlightSearchResponse> getDepartingFlights(
             @RequestParam(value = "departurePort", required = false) Airport departurePort,
             @RequestParam(value = "arrivalPort", required = false) Airport arrivalPort,
-            @RequestParam(value = "departureDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
-            @RequestParam("noOfAdult") int noOfAdult,
-            @RequestParam("noOfChildren") int noOfChildren,
-            @RequestParam("noOfInfant") int noOfInfant) {
+            @RequestParam(value = "departureDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate
+            ) {
 
-        FlightSearchResponse departingFlights = flightService.getDepartingFlights( departurePort, arrivalPort, departureDate, noOfAdult, noOfChildren, noOfInfant);
+        FlightSearchResponse departingFlights = flightService.getDepartingFlights( departurePort, arrivalPort, departureDate);
 
         return ResponseEntity.ok(departingFlights);
 
@@ -75,33 +71,31 @@ public class FlightController {
     public ResponseEntity<FlightSearchResponse> getReturningFlights(
             @RequestParam(value = "departurePort", required = false) Airport departurePort,
             @RequestParam(value = "arrivalPort", required = false) Airport arrivalPort,
-            @RequestParam(value = "returnDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnDate,
-            @RequestParam(value = "noOfAdult") int noOfAdult,
-            @RequestParam(value = "noOfChildren") int noOfChildren,
-            @RequestParam(value = "noOfInfant") int noOfInfant) {
+            @RequestParam(value = "returnDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnDate
+            ) {
 
-        FlightSearchResponse returningFlights = flightService.getReturningFlights(departurePort, arrivalPort, returnDate, noOfAdult, noOfChildren, noOfInfant);
+        FlightSearchResponse returningFlights = flightService.getReturningFlights(departurePort, arrivalPort, returnDate);
 
         return ResponseEntity.ok(returningFlights);
     }
 
     @GetMapping("/all-returning-flights")
-    public ResponseEntity<FlightSearchResponse> getAllReturningFlights(
+    public ResponseEntity<List<FlightSearchDto>> getAllReturningFlights(
             @RequestParam(value = "departurePort", required = false) Airport departurePort,
             @RequestParam(value = "arrivalPort", required = false) Airport arrivalPort
     ){
-        FlightSearchResponse returningFlights = flightService.getAllReturningFlights(departurePort,arrivalPort);
+        List<FlightSearchDto> returningFlights = flightService.getAllReturningFlights(departurePort,arrivalPort);
 
         return ResponseEntity.ok(returningFlights);
     }
 
     @GetMapping("/all-departing-flights")
-    public ResponseEntity<FlightSearchResponse> getAllDepartingFlights(
+    public ResponseEntity<List<FlightSearchDto>> getAllDepartingFlights(
             @RequestParam(value = "departurePort", required = false) Airport departurePort,
             @RequestParam(value = "arrivalPort", required = false) Airport arrivalPort
     ){
-        FlightSearchResponse returningFlights = flightService.getAllDepartingFlights(departurePort,arrivalPort);
-        return ResponseEntity.ok(returningFlights);
+        List<FlightSearchDto> departingFlights= flightService.getAllDepartingFlights(departurePort,arrivalPort);
+        return ResponseEntity.ok(departingFlights);
     }
 
     @GetMapping("/fetch-all-flights")

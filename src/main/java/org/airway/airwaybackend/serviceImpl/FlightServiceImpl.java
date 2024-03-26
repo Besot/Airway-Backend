@@ -63,7 +63,7 @@ public class FlightServiceImpl implements FlightService {
 
     }
 @Override
-    public Map<String, FlightSearchResponse> searchAvailableFlight(Airport departurePort, Airport arrivalPort, LocalDate departureDate, FlightDirection flightDirection, LocalDate returnDate, int noOfAdult, int noOfChildren, int noOfInfant) {
+    public Map<String, FlightSearchResponse> searchAvailableFlight(Airport departurePort, Airport arrivalPort, LocalDate departureDate, FlightDirection flightDirection, LocalDate returnDate) {
         Map<String, FlightSearchResponse> flightsMap = new HashMap<>();
     if (departurePort == null || arrivalPort == null || departureDate == null) {
         throw new FlightNotFoundException("Departure port, arrival port, and departure date must not be null.");
@@ -72,7 +72,7 @@ public class FlightServiceImpl implements FlightService {
         List<Flight> departingFlight= null;
         List<Flight> returningFlight= null;
         if(Objects.equals(flightDirection, ONE_WAY)){
-            departingFlight = flightRepository. searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(  departurePort,  arrivalPort,  departureDate, noOfAdult, noOfChildren, noOfInfant).orElseThrow(()-> new FlightNotFoundException("Flights not found, please adjust your search criteria"));
+            departingFlight = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(  departurePort,  arrivalPort,  departureDate).orElseThrow(()-> new FlightNotFoundException("Flights not found, please adjust your search criteria"));
             List<Flight> confirmedDepartedFlights = new ArrayList<>();
             for(Flight flight : departingFlight) {
                 if (flight.getFlightStatus() == FlightStatus.CONFIRMED || flight.getFlightStatus()==FlightStatus.MODIFIED) {
@@ -83,8 +83,8 @@ public class FlightServiceImpl implements FlightService {
             flightsMap.put("Departing Flights", new FlightSearchResponse(convertFlightToDTO(confirmedDepartedFlights), confirmedDepartedFlights.size()));
 
         }else if (Objects.equals(flightDirection, ROUND_TRIP)){
-            departingFlight = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual( departurePort,   arrivalPort,  departureDate,  noOfAdult,  noOfChildren,  noOfInfant).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
-            returningFlight = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual( arrivalPort,   departurePort,  returnDate, noOfAdult,  noOfChildren,  noOfInfant).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
+            departingFlight = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate( departurePort,   arrivalPort,  departureDate).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
+            returningFlight = flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate( arrivalPort,   departurePort,  returnDate).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
             List<Flight> confirmedDepartingFlights = new ArrayList<>();
             for(Flight flight : departingFlight) {
                 if (flight.getFlightStatus() == FlightStatus.CONFIRMED || flight.getFlightStatus()==FlightStatus.MODIFIED) {
@@ -117,14 +117,16 @@ public class FlightServiceImpl implements FlightService {
             flightDTO.setId(flight.getId());
             flightDTO.setFlightStatus(flight.getFlightStatus());
             flightDTO.setFlightNo(flight.getFlightNo());
-            flightDTO.setAirline(flight.getAirline());
+            flightDTO.setAirline(flight.getAirline().getName());
             flightDTO.setArrivalDate(flight.getArrivalDate());
             flightDTO.setDepartureDate(flight.getDepartureDate());
             flightDTO.setArrivalTime(flight.getArrivalTime());
             flightDTO.setDepartureTime(flight.getDepartureTime());
             flightDTO.setDuration(flight.getDuration());
-            flightDTO.setArrivalPortName(flight.getArrivalPort());
-            flightDTO.setDeparturePortName(flight.getDeparturePort());
+            flightDTO.setArrivalPortName(flight.getArrivalPort().getIataCode());
+            flightDTO.setDeparturePortName(flight.getDeparturePort().getIataCode());
+            flightDTO.setArrivalPortCity(flight.getArrivalPort().getCity());
+            flightDTO.setDeparturePortCity(flight.getDeparturePort().getCity());
             flightDTO.setFlightDirection(flight.getFlightDirection());
             List<ClassDto> classDtos = new ArrayList<>();
 
@@ -144,11 +146,11 @@ public class FlightServiceImpl implements FlightService {
     }
 
 @Override
-    public FlightSearchResponse getReturningFlights(Airport departurePort, Airport arrivalPort, LocalDate returnDate, int noOfAdult, int noOfChildren, int noOfInfant) {
+    public FlightSearchResponse getReturningFlights(Airport departurePort, Airport arrivalPort, LocalDate returnDate) {
     if (departurePort == null || arrivalPort == null || returnDate == null) {
         throw new FlightNotFoundException("Departure port, arrival port, and departure date must not be null.");
     }
-        List<Flight> availableFlight= flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual( arrivalPort, departurePort, returnDate, noOfAdult, noOfChildren, noOfInfant).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
+        List<Flight> availableFlight= flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate( arrivalPort, departurePort, returnDate).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
     List<Flight> confirmedReturningFlights = new ArrayList<>();
     for(Flight flight : availableFlight) {
         if (flight.getFlightStatus() == FlightStatus.CONFIRMED|| flight.getFlightStatus() == FlightStatus.MODIFIED) {
@@ -160,7 +162,7 @@ public class FlightServiceImpl implements FlightService {
 
 }
     @Override
-    public FlightSearchResponse getAllReturningFlights(Airport departurePort, Airport arrivalPort) {
+    public List<FlightSearchDto> getAllReturningFlights(Airport departurePort, Airport arrivalPort) {
         if (departurePort == null || arrivalPort == null) {
             throw new FlightNotFoundException("Departure port, arrival port, and departure date must not be null.");
         }
@@ -172,11 +174,11 @@ public class FlightServiceImpl implements FlightService {
             }
         }
 
-        return new FlightSearchResponse(convertFlightToDTO(confirmedReturningFlights),convertFlightToDTO(confirmedReturningFlights).size());
+        return convertFlightToDTO(confirmedReturningFlights);
 
     }
     @Override
-    public FlightSearchResponse getAllDepartingFlights(Airport departurePort, Airport arrivalPort) {
+    public List<FlightSearchDto> getAllDepartingFlights(Airport departurePort, Airport arrivalPort) {
         if (departurePort == null || arrivalPort == null) {
             throw new FlightNotFoundException("Departure port, arrival port, and departure date must not be null.");
         }
@@ -188,15 +190,15 @@ public class FlightServiceImpl implements FlightService {
             }
 
         }
-        return new FlightSearchResponse(convertFlightToDTO(confirmedDepartedFlights), convertFlightToDTO(confirmedDepartedFlights).size());
+        return convertFlightToDTO(confirmedDepartedFlights);
     }
 
     @Override
-    public FlightSearchResponse getDepartingFlights(Airport departurePort, Airport arrivalPort, LocalDate departureDate, int noOfAdult, int noOfChildren, int noOfInfant) {
+    public FlightSearchResponse getDepartingFlights(Airport departurePort, Airport arrivalPort, LocalDate departureDate) {
     if (departurePort == null || arrivalPort == null || departureDate == null) {
         throw new FlightNotFoundException("Departure port, arrival port, and departure date must not be null.");
     }
-        List<Flight> availableFlight= flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDateAndNoOfAdultGreaterThanEqualAndNoOfChildrenGreaterThanEqualAndNoOfInfantGreaterThanEqual(departurePort, arrivalPort, departureDate, noOfAdult, noOfChildren, noOfInfant).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
+        List<Flight> availableFlight= flightRepository.searchByDeparturePortAndArrivalPortAndDepartureDate(departurePort, arrivalPort, departureDate).orElseThrow(()-> new FlightNotFoundException("Flight not found, please adjust your search criteria"));
     List<Flight> confirmedDepartedFlights = new ArrayList<>();
     for(Flight flight : availableFlight) {
         if (flight.getFlightStatus() == FlightStatus.CONFIRMED || flight.getFlightStatus() == FlightStatus.MODIFIED) {
@@ -233,7 +235,7 @@ public class FlightServiceImpl implements FlightService {
 
         Flight newFlight = new Flight();
         newFlight.setFlightDirection(flightDto.getFlightDirection());
-        newFlight.setFlightStatus((flightDto.getFlightStatus()));
+        newFlight.setFlightStatus(FlightStatus.PENDING);
 
         String newFlightNoLetter = generateRandomLetters(2);
         String newFlightNo = generateRandomNumber(3);
@@ -252,18 +254,8 @@ public class FlightServiceImpl implements FlightService {
         Airport departurePort = airportRepository.findByIataCodeIgnoreCase(flightDto.getDeparturePortName()).orElseThrow(() -> new AirportNotFoundException("Airport with code not Found"));
         newFlight.setDeparturePort(departurePort);
         newFlight.setTotalSeat(flightDto.getTotalSeat());
-        newFlight.setNoOfAdult(flightDto.getNoOfAdult());
-        newFlight.setNoOfChildren(flightDto.getNoOfChildren());
-        newFlight.setNoOfInfant(flightDto.getNoOfInfant());
         LocalTime arrivalTime = flightDto.getDepartureTime().plusMinutes(flightDto.getDuration());
         newFlight.setArrivalTime(arrivalTime);
-
-        if (flightDto.getFlightDirection() == FlightDirection.ROUND_TRIP) {
-            newFlight.setReturnDate(flightDto.getReturnDate());
-            newFlight.setReturnTime(flightDto.getReturnTime());
-
-        }
-
         Flight saveFlight = flightRepository.save(newFlight);
         List<Classes> classesList = flightDto.getClasses();
         if (classesList != null) {
@@ -371,13 +363,6 @@ public class FlightServiceImpl implements FlightService {
 
         if (flightDto.getFlightDirection() != null) {
             flight.setFlightDirection(flightDto.getFlightDirection());
-            if (flightDto.getFlightDirection() == FlightDirection.ROUND_TRIP) {
-                flight.setReturnDate(flightDto.getReturnDate());
-                flight.setReturnTime(flightDto.getReturnTime());
-            } else if (flightDto.getFlightDirection() == FlightDirection.ONE_WAY) {
-                flight.setReturnDate(null);
-                flight.setReturnTime(null);
-            }
         }
         if (flightDto.getFlightNo() != null) {
             String newFlightNoLetter = generateRandomLetters(2);
@@ -409,15 +394,6 @@ public class FlightServiceImpl implements FlightService {
         }
         if (flightDto.getTotalSeat() != 0) {
             flight.setTotalSeat(flightDto.getTotalSeat());
-        }
-        if (flightDto.getNoOfAdult() != 0) {
-            flight.setNoOfAdult(flightDto.getNoOfAdult());
-        }
-        if (flightDto.getNoOfChildren() != 0) {
-            flight.setNoOfChildren(flightDto.getNoOfChildren());
-        }
-        if (flightDto.getNoOfInfant() != 0) {
-            flight.setNoOfInfant(flightDto.getNoOfInfant());
         }
 
         if (flightDto.getArrivalPortName() != null) {
@@ -497,23 +473,18 @@ public class FlightServiceImpl implements FlightService {
         flightDTO.setId(flight.getId());
         flightDTO.setFlightDirection(flight.getFlightDirection());
         flightDTO.setFlightNo(flight.getFlightNo());
-        flightDTO.setAirline(flight.getAirline());
+        flightDTO.setAirline(flight.getAirline().getName());
         flightDTO.setArrivalDate(flight.getArrivalDate());
         flightDTO.setDepartureDate(flight.getDepartureDate());
         flightDTO.setArrivalTime(flight.getArrivalTime());
-        flightDTO.setReturnDate(flight.getReturnDate());
-        flightDTO.setReturnTime(flight.getReturnTime());
         flightDTO.setDepartureTime(flight.getDepartureTime());
         flightDTO.setDuration(flight.getDuration());
-        flightDTO.setArrivalPortName(flight.getArrivalPort());
-        flightDTO.setDeparturePortName(flight.getDeparturePort());
+        flightDTO.setArrivalPortName(flight.getArrivalPort().getName());
+        flightDTO.setDeparturePortName(flight.getDeparturePort().getName());
         List<ClassDto> classDtoList = getClassDtos(flight);
         flightDTO.setClasses(classDtoList);
         flightDTO.setTotalSeat(flight.getTotalSeat());
         flightDTO.setAvailableSeat(flight.getAvailableSeat());
-        flightDTO.setNoOfChildren(flight.getNoOfChildren());
-        flightDTO.setNoOfAdult(flight.getNoOfAdult());
-        flightDTO.setNoOfInfant(flight.getNoOfInfant());
 
         return flightDTO;
     }

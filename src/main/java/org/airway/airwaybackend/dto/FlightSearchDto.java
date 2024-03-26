@@ -22,21 +22,17 @@ public class FlightSearchDto {
     private FlightStatus flightStatus;
     private String flightNo;
     @JsonProperty("airline")
-    private Airline airline;
+    private String airline;
     private LocalDate arrivalDate;
     private LocalDate departureDate;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
-    private LocalDate returnDate;
-    private LocalTime returnTime;
+    private long duration;
+    private String  arrivalPortName;
+    private String departurePortName;
+    private String departurePortCity;
+    private String arrivalPortCity;
     private int totalSeat;
     private int availableSeat;
-    private int noOfChildren;
-    private int noOfAdult;
-    private int noOfInfant;
-    private long duration;
-
-    private Airport  arrivalPortName;
-    private Airport departurePortName;
     private List<ClassDto> classes;
 }

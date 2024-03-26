@@ -1,6 +1,7 @@
 package org.airway.airwaybackend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,15 +25,19 @@ public class Booking {
     private String bookingReferenceCode;
     private FlightDirection tripType;
     private String passengerCode;
+    @JsonIgnore
     @OneToMany
     private List<PNR> pnrList;
+    @JsonIgnore
     @OneToMany
     private List<Ticket> tickets;
+    @JsonIgnore
     @OneToMany
     private List<Passenger> passengers;
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     List<BookingFlight>bookingFlights;
     private BigDecimal totalFare;
+    @JsonIgnore
     @ManyToOne
     private User userId;
     private Boolean pay;

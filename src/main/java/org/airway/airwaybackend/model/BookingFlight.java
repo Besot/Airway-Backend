@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,14 +13,18 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingFlight {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "flight_no")
     private Flight flight;
+    @JsonIgnore
     @OneToOne
     private PNR pnr;
+
     @ManyToOne
     private Classes classes;
     private String baggageAllowance;
@@ -28,7 +33,7 @@ public class BookingFlight {
     private BigDecimal serviceCharge;
     private BigDecimal baseFare;
     private BigDecimal totalFare;
-
+@JsonIgnore
     @ManyToOne
     private Booking booking;
 }

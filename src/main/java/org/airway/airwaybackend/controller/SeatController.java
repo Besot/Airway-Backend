@@ -4,15 +4,13 @@ import org.airway.airwaybackend.dto.SeatListDto;
 import org.airway.airwaybackend.exception.SeatListNotFoundException;
 import org.airway.airwaybackend.serviceImpl.SeatServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/seat")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class SeatController {
         private final SeatServiceImpl seatServiceImp;
 

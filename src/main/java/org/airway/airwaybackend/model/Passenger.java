@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,16 +34,19 @@ public class Passenger {
     private String PSN;
     @Enumerated(EnumType.STRING)
     private Category category;
+    @JsonIgnore
     @OneToOne
     private User user;
     private String contactPhone;
     private String contactEmail;
+    @JsonIgnore
     @ManyToMany(mappedBy = "passengers")
     private List<Flight> flights;
-    @OneToOne
-    private SeatList seat;
+    @OneToMany
+    private  List<SeatList> seat;
     private Boolean contact;
     private LocalDate dateOfBirth;
+    @JsonIgnore
     @ManyToOne
     private Booking bookings;
 

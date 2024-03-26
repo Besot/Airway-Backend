@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +25,14 @@ public class Classes {
     private BigDecimal serviceCharge;
     private BigDecimal baseFare;
     private BigDecimal totalFare;
+    @OneToMany
+    private List<PNR> pnrList;
     @OneToOne
     private Seat seat;
+    @JsonIgnore
     @ManyToOne
     private Flight flight;
+    @JsonIgnore
     @OneToMany
     private List<Passenger> passengers;
 
