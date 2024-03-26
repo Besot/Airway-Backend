@@ -1,17 +1,13 @@
 package org.airway.airwaybackend.serviceImpl;
 
 
-import org.airway.airwaybackend.dto.BookingEditingDto;
-import org.airway.airwaybackend.dto.BookingFlightDto;
-import org.airway.airwaybackend.dto.BookingRequestDto;
-import org.airway.airwaybackend.dto.PassengerDTo;
+import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.enums.BookingStatus;
 import org.airway.airwaybackend.enums.FlightDirection;
 import org.airway.airwaybackend.enums.Role;
-import org.airway.airwaybackend.exception.BookingNotFoundException;
+import org.airway.airwaybackend.exception.*;
 import org.airway.airwaybackend.exception.ClassNotFoundException;
-import org.airway.airwaybackend.exception.SeatListNotFoundException;
-import org.airway.airwaybackend.exception.UnauthorizedAccessException;
 import org.airway.airwaybackend.model.*;
 import org.airway.airwaybackend.repository.*;
 import org.airway.airwaybackend.model.Booking;
@@ -22,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -40,8 +37,11 @@ public class BookingServiceImpl implements BookingService {
     private final ClassesRepository classesRepository;
     private final BookingFlightRepository bookingFlightRepository;
     private final PNRServiceImpl pnrServiceImpl;
+    private final EmailServiceImpl emailService;
+    private final BookingConfirmationTokenRepository bookingConfirmationTokenRepository;
+    private final Map<String, String> bookingReferenceMap = new HashMap<>();
 
-    public BookingServiceImpl(BookingRepository bookingRepository, PassengerRepository passengerRepository, UserRepository userRepository, FlightRepository flightRepository, ClassesRepository classesRepository, BookingFlightRepository bookingFlightRepository, PNRServiceImpl pnrServiceImpl) {
+    public BookingServiceImpl(BookingRepository bookingRepository, PassengerRepository passengerRepository, UserRepository userRepository, FlightRepository flightRepository, ClassesRepository classesRepository, BookingFlightRepository bookingFlightRepository, PNRServiceImpl pnrServiceImpl, EmailServiceImpl emailService, BookingConfirmationTokenRepository bookingConfirmationTokenRepository) {
         this.bookingRepository = bookingRepository;
         this.passengerRepository = passengerRepository;
         this.userRepository = userRepository;
@@ -49,6 +49,8 @@ public class BookingServiceImpl implements BookingService {
         this.classesRepository = classesRepository;
         this.bookingFlightRepository = bookingFlightRepository;
         this.pnrServiceImpl = pnrServiceImpl;
+        this.emailService = emailService;
+        this.bookingConfirmationTokenRepository = bookingConfirmationTokenRepository;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public String bookFlight(BookingRequestDto bookingRequestDto) {
+    public String bookFlight(BookingRequestDto bookingRequestDto, HttpServletRequest request) {
         try {
             Booking booking = new Booking();
             List<PNR> pnrList = new ArrayList<>();
@@ -104,7 +106,7 @@ public class BookingServiceImpl implements BookingService {
                     }
                 } else if (user != null && user.getUserRole().equals(Role.PASSENGER)) {
                     booking.setUserId(user);
-                    passenger.setPassengerCode(generateMemberShip("ME"));
+                    passenger.setPassengerCode(user.getMembershipNo());
                     if (passenger.getContact().equals(true)) {
                         booking.setPassengerCode(user.getMembershipNo());
                         booking.setPassengerContactEmail(passenger.getPassengerEmail());
@@ -174,8 +176,10 @@ public class BookingServiceImpl implements BookingService {
             booking.setBaggageAllowance(calculateAllBaggageAllowances(savedBookingFlight, BookingFlight::getBaggageAllowance));
             booking.setPassengers(savedPassengers);
 
-            bookingRepository.save(booking);
-            return "booking successful";
+            savedBooking = bookingRepository.save(booking);
+            bookingConfirmationMails(request, savedBooking.getBookingReferenceCode());
+            String token = generateTokenForBookingReference(savedBooking.getBookingReferenceCode());
+            return "booking successful"+token;
         } catch (ClassNotFoundException ex) {
             return "Class not available";
         } catch (SeatListNotFoundException ex) {
@@ -220,7 +224,7 @@ public class BookingServiceImpl implements BookingService {
 
     public String generateMemberShip(String prefix) {
         Random random = new Random();
-        int suffixLength = 4;
+        int suffixLength = 6;
         StringBuilder suffixBuilder = new StringBuilder();
         for (int i = 0; i < suffixLength; i++) {
             suffixBuilder.append(random.nextInt(10));
@@ -348,5 +352,144 @@ public class BookingServiceImpl implements BookingService {
         }
         return savedBookingFlights;
 
+    }
+
+    public void bookingConfirmationMails(HttpServletRequest request, String bookingReferenceCode) {
+        Booking booking = bookingRepository.findByBookingReferenceCode(bookingReferenceCode).orElseThrow(() -> new RuntimeException("Booking not registered"));
+        if (booking == null) {
+            throw new UsernameNotFoundException("Booking with referenceCode " + bookingReferenceCode + " not found");
+        }
+        String token = UUID.randomUUID().toString();
+        createBookingConfirmationTokenForBooking(booking, token);
+        emailService.sendBookingConfirmationMail(booking, token, request);
+    }
+
+    public void createBookingConfirmationTokenForBooking(Booking booking, String token) {
+        BookingConfirmationToken newlyCreatedBookingConfirmationToken = new BookingConfirmationToken(booking, token);
+        BookingConfirmationToken bookingConfirmationToken = bookingConfirmationTokenRepository.findByBooking(booking);
+        if (bookingConfirmationToken != null) {
+            bookingConfirmationTokenRepository.delete(bookingConfirmationToken);
+        }
+        bookingConfirmationTokenRepository.save(newlyCreatedBookingConfirmationToken);
+    }
+
+    public String validateBookingConfirmationToken(String token) {
+        BookingConfirmationToken bookingConfirmationToken = bookingConfirmationTokenRepository.findByToken(token);
+        if (bookingConfirmationToken == null) {
+            return "invalid";
+        }
+        Calendar cal = Calendar.getInstance();
+        if ((bookingConfirmationToken.getExpirationTime().getTime()
+                - cal.getTime().getTime()) <= 0) {
+            bookingConfirmationTokenRepository.delete(bookingConfirmationToken);
+            return "expired";
+        } else return "valid";
+    }
+
+
+    private Optional<Booking> getBookingByToken(String token) {
+        BookingConfirmationToken bookingConfirmationToken = bookingConfirmationTokenRepository.findByToken(token);
+        if (bookingConfirmationToken != null) {
+            return Optional.ofNullable(bookingConfirmationToken.getBooking());
+        }
+        return Optional.empty();
+    }
+
+
+    public BookingConfirmationDto confirmBooking(String token) {
+        String result = validateBookingConfirmationToken(token);
+        if (!result.equalsIgnoreCase("valid")) {
+            throw new InvalidTokenException("Invalid Token");
+        }
+        Optional<Booking> booking = getBookingByToken(token);
+        BookingConfirmationDto bookingConfirmationDto = null;
+        if (booking.isPresent()) {
+            bookingConfirmationDto = new BookingConfirmationDto();
+            List<PassengerConfirmationDto> passengerConfirmationDtos = new ArrayList<>();
+            List<PnrDto> pnrDtoList = new ArrayList<>();
+            List<FlightConfirmDTo> flightConfirmDTos = new ArrayList<>();
+            bookingConfirmationDto.setPassengerList(passengerConfirmationDtos);
+            List<BookingFlight> bookingFlights = booking.get().getBookingFlights();
+            for (BookingFlight bookingFlight : bookingFlights) {
+                FlightConfirmDTo flightConfirmDTo = new FlightConfirmDTo();
+                flightConfirmDTo.setFlightNo(bookingFlight.getFlight().getFlightNo());
+                flightConfirmDTo.setArrivalPortIata(bookingFlight.getFlight().getArrivalPort().getIataCode());
+                flightConfirmDTo.setDeparturePortIata(bookingFlight.getFlight().getDeparturePort().getIataCode());
+                flightConfirmDTo.setArrivalDate(String.valueOf(bookingFlight.getFlight().getArrivalDate()));
+                flightConfirmDTo.setDepartureDate(String.valueOf(bookingFlight.getFlight().getDepartureDate()));
+                flightConfirmDTo.setArrivalTime(String.valueOf(bookingFlight.getFlight().getArrivalTime()));
+                flightConfirmDTo.setDepartureTime(String.valueOf(bookingFlight.getFlight().getDepartureTime()));
+                flightConfirmDTo.setArrivalPortCity(bookingFlight.getFlight().getArrivalPort().getCity());
+                flightConfirmDTo.setDeparturePortCity(bookingFlight.getFlight().getDeparturePort().getCity());
+                flightConfirmDTo.setPassengerList(passengerConfirmationDtos);
+                flightConfirmDTos.add(flightConfirmDTo);
+            }
+            bookingConfirmationDto.setFlightDetails(flightConfirmDTos);
+
+            List<Passenger> passenger = passengerRepository.findAllByPassengerEmail(booking.get().getPassengerContactEmail());
+            bookingConfirmationDto.setUserFullName(passenger.get(passenger.size() - 1).getFirstName() + "  " + passenger.get(passenger.size() - 1).getLastName());
+
+            List<PNR> pnrs = booking.get().getPnrList();
+            for (PNR pnr : pnrs) {
+                PnrDto pnrDto = new PnrDto();
+                pnrDto.setPNRCode(pnr.getPNRCode());
+                pnrDtoList.add(pnrDto);
+            }
+
+            bookingConfirmationDto.setPNRCodes(pnrDtoList);
+            bookingConfirmationDto.setBookingRef(booking.get().getBookingReferenceCode());
+            List<Passenger> passengerList = booking.get().getPassengers();
+            for (Passenger passenger2 : passengerList) {
+                PassengerConfirmationDto passengerConfirmationDto = new PassengerConfirmationDto();
+                passengerConfirmationDto.setFirstName(passenger2.getFirstName());
+                passengerConfirmationDto.setLastName(passenger2.getLastName());
+                passengerConfirmationDto.setTitle(passenger2.getTitle());
+                passengerConfirmationDtos.add(passengerConfirmationDto);
+            }
+            bookingConfirmationDto.setExpiryTime(String.valueOf(booking.get().getCreatedAt().toLocalTime().plusHours(24)));
+            bookingConfirmationDto.setExpiryDate(String.valueOf(booking.get().getCreatedAt().toLocalDate().plusDays(1)));
+            bookingConfirmationDto.setPassengerList(passengerConfirmationDtos);
+            return bookingConfirmationDto;
+        }
+        throw new InvalidTokenException("Invalid Token");
+
+    }
+
+
+    public TripSummaryDTo getTripSummary(String token) throws BookingNotFoundException {
+        String bookingRef= returnBookingRef(token);
+        if(bookingRef == null || token== null){
+            throw new BookingNotFoundException("token is invalid");
+        }
+        Booking booking = bookingRepository.findByBookingReferenceCode(bookingRef).orElseThrow(()-> new BookingNotFoundException("Booking not found"));
+        TripSummaryDTo tripSummaryDTo = new TripSummaryDTo();
+        List<BookingFlight> flightsBooked=booking.getBookingFlights();
+        List<FlightConfirmDTo>flightConfirmDTos= new ArrayList<>();
+        for(BookingFlight bookingFlight: flightsBooked){
+            FlightConfirmDTo flightConfirmDTo = new FlightConfirmDTo();
+            flightConfirmDTo.setArrivalTime(String.valueOf(bookingFlight.getFlight().getArrivalTime()));
+            flightConfirmDTo.setDepartureTime(String.valueOf(bookingFlight.getFlight().getDepartureTime()));
+            flightConfirmDTo.setArrivalDate(String.valueOf(bookingFlight.getFlight().getArrivalDate()));
+            flightConfirmDTo.setDepartureDate(String.valueOf(bookingFlight.getFlight().getDepartureDate()));
+            flightConfirmDTo.setFlightNo(bookingFlight.getFlight().getFlightNo());
+            flightConfirmDTo.setDeparturePortCity(bookingFlight.getFlight().getDeparturePort().getCity());
+            flightConfirmDTos.add(flightConfirmDTo);
+        }
+        tripSummaryDTo.setFlightDetails(flightConfirmDTos);
+        tripSummaryDTo.setBookingRef(booking.getBookingReferenceCode());
+        tripSummaryDTo.setServiceCharge(String.valueOf(booking.getServiceCharge()));
+        tripSummaryDTo.setTaxAmount(String.valueOf(booking.getTaxFee()));
+        tripSummaryDTo.setTotalFare(String.valueOf(booking.getTotalFare()));
+        return tripSummaryDTo;
+    }
+
+    public String generateTokenForBookingReference(String bookingRef){
+        String token = UUID.randomUUID().toString();
+        bookingReferenceMap.put(token, bookingRef);
+        return token;
+    }
+
+    public String returnBookingRef (String token){
+        return bookingReferenceMap.get(token);
     }
 }

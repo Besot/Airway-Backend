@@ -1,5 +1,6 @@
 package org.airway.airwaybackend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.BookingRequestDto;
 import org.airway.airwaybackend.serviceImpl.BookingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import static org.mockito.Mockito.*;
 class BookingControllerTest {
     @Mock
     private BookingServiceImpl bookingServiceImp;
+    @Mock
+    HttpServletRequest request;
 
     @InjectMocks
     private BookingController bookingController;
@@ -30,14 +33,14 @@ class BookingControllerTest {
         BookingRequestDto bookingRequestDto = new BookingRequestDto();
         String responseMessage = "Booking successful";
 
-        when(bookingServiceImp.bookFlight(bookingRequestDto)).thenReturn(responseMessage);
+        when(bookingServiceImp.bookFlight(bookingRequestDto, request)).thenReturn(responseMessage);
 
-        ResponseEntity<String> responseEntity = bookingController.BookFlight(bookingRequestDto);
+        ResponseEntity<String> responseEntity = bookingController.BookFlight(bookingRequestDto, request);
 
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(responseMessage, responseEntity.getBody());
 
-        verify(bookingServiceImp, times(1)).bookFlight(bookingRequestDto);
+        verify(bookingServiceImp, times(1)).bookFlight(bookingRequestDto, request);
     }
 }

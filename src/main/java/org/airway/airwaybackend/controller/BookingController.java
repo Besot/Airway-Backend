@@ -1,7 +1,11 @@
 package org.airway.airwaybackend.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.dto.BookingConfirmationDto;
 import org.airway.airwaybackend.dto.BookingEditingDto;
 import org.airway.airwaybackend.dto.BookingRequestDto;
+import org.airway.airwaybackend.dto.TripSummaryDTo;
+import org.airway.airwaybackend.exception.BookingNotFoundException;
 import org.airway.airwaybackend.exception.ClassNotFoundException;
 import org.airway.airwaybackend.exception.UnauthorizedAccessException;
 import org.airway.airwaybackend.model.Booking;
@@ -29,12 +33,12 @@ public class BookingController {
                 @RequestParam(defaultValue = "10") int pageSize) {
             return new ResponseEntity<>(bookingService.getAllBookings(pageNo, pageSize), HttpStatus.OK);
         }
-
-    @PostMapping("/booking-flight")
-    public ResponseEntity<String> BookFlight(@RequestBody BookingRequestDto bookingRequestDto) {
-        String response = bookingService.bookFlight(bookingRequestDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//
+//    @PostMapping("/booking-flight")
+//    public ResponseEntity<String> BookFlight(@RequestBody BookingRequestDto bookingRequestDto, final HttpServletRequest request) {
+//        String response = bookingService.bookFlight(bookingRequestDto, request);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
     @PutMapping("/edit-bookings/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> editBooking(@PathVariable Long id, @RequestBody BookingEditingDto bookingEditingDto) throws UnauthorizedAccessException, ClassNotFoundException {
@@ -42,4 +46,24 @@ public class BookingController {
         return ResponseEntity.ok("Booking updated Successfully");
     }
 
+    @PostMapping("/booking-flight")
+    public ResponseEntity<String> BookFlight(@RequestBody BookingRequestDto bookingRequestDto, final HttpServletRequest request) {
+        String response = bookingService.bookFlight(bookingRequestDto, request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/booking-confirmation/{token}")
+    public ResponseEntity<BookingConfirmationDto> bookingConfirmed(@PathVariable String token){
+        return ResponseEntity.ok(bookingService.confirmBooking(token));
+    }
+
+    @GetMapping("/trip-summary/{token}")
+    public ResponseEntity<TripSummaryDTo> getTripSummarryDetails (@PathVariable String token) throws BookingNotFoundException {
+        try {
+            return ResponseEntity.ok(bookingService.getTripSummary(token));
+        } catch (BookingNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

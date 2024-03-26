@@ -42,7 +42,7 @@ import java.util.List;
             List<User> adminData = Arrays.asList(
                     new User("Desmond", "Isama", "isamadesmond@gmail.com", "09030797493", passwordEncoder.encode("1234"), Role.ADMIN, true),
                     new User("James", "Adedini", "jamesadedini@gmail.com", "09030797493", passwordEncoder.encode("1234"), Role.ADMIN, true),
-                    new User("Michael", "Sotunde", "michaelsotunde@gmail.com", "09030797493", passwordEncoder.encode("1234"), Role.ADMIN, true),
+                    new User("Sobowale", "Omotayo", "sobowaleomotayo97@gmail.com", "09058503787", passwordEncoder.encode("1234"), Role.ADMIN, true),
                     new User("Silas", "Bush", "silasbush@gmail.com", "09030797493", passwordEncoder.encode("1234"), Role.ADMIN, true),
                     new User("Confidence", "Obieshika", "confidenceobieshika@gmail.com", "09030797493", passwordEncoder.encode("1234"), Role.ADMIN, true),
                     new User("Emmanuel", "Bobade", "bobmanuelbesot2@gmail.com", "08130229749", passwordEncoder.encode("1234"), Role.ADMIN, true));
