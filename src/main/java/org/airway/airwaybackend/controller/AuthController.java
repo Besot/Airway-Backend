@@ -36,7 +36,7 @@ public class AuthController {
     @GetMapping("/verifyRegistration")
     public ResponseEntity<String> verifyRegistration(@RequestParam("token") String token){
         String result = userService.validateVerificationToken(token);
-        if (result.equalsIgnoreCase("valid token")){
+        if (result.equalsIgnoreCase("valid")){
             return new ResponseEntity<>( "User Verified Successfully",HttpStatus.OK);
         }
         return new ResponseEntity<>("User signed up", HttpStatus.BAD_REQUEST);
