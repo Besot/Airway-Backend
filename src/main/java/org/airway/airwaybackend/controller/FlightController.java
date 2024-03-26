@@ -128,10 +128,14 @@ public class FlightController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
+  @PostMapping("/confirm/{Id}")
+    public ResponseEntity<String> confirmFlight(@PathVariable Long Id) {
+        String response = flightService.confirmFlight(Id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     @GetMapping("/{Id}")
     public ResponseEntity<FlightSearchDto> getFlightDetails(@PathVariable Long Id) {
-        return new ResponseEntity<>(flightService.getFlightDetails(Id),HttpStatus.OK) ;
+        return new ResponseEntity<>(flightService.getFlightDetails(Id), HttpStatus.OK);
     }
 }
 

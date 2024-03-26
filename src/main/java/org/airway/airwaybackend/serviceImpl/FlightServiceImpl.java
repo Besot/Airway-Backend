@@ -467,6 +467,25 @@ public class FlightServiceImpl implements FlightService {
         }
     }
     @Override
+    public String confirmFlight(Long Id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+
+        if (!user.getUserRole().equals(Role.ADMIN)) {
+            throw new UnauthorizedUserException("Admin role required to confirm flight");
+        }
+
+        Flight flight = flightRepository.findById(Id)
+                .orElseThrow(() -> new FlightNotFoundException("Flight not found"));
+
+        flight.setFlightStatus(FlightStatus.CONFIRMED);
+        flightRepository.save(flight);
+
+        return "Flight confirmed successfully";
+    }
+    @Override
     public FlightSearchDto getFlightDetails(Long flightId) {
         Flight flight = flightRepository.findById(flightId)
                 .orElseThrow(() -> new FlightNotFoundException("Flight not found with id: " + flightId));
@@ -502,7 +521,6 @@ public class FlightServiceImpl implements FlightService {
     private static List<ClassDto> getClassDtos(Flight flight) {
         List<ClassDto> classDtoList = new ArrayList<>();
         flight.getClasses().forEach(classes -> {
-
             ClassDto classDto = new ClassDto();
             classDto.setId(classes.getId());
             classDto.setClassName(classes.getClassName());
@@ -512,6 +530,7 @@ public class FlightServiceImpl implements FlightService {
         });
         return classDtoList;
     }
+
 }
 
 

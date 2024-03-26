@@ -29,6 +29,7 @@ public interface FlightService {
     String generateRandomNumber(int length);
     String generateRandomLetters(int length);
     List<SeatList> generateSeatList (Seat seat);
+    String confirmFlight(Long Id);
 
     FlightSearchDto getFlightDetails(Long flightId);
 }
