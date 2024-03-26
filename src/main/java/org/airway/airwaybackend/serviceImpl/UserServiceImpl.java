@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
 import org.airway.airwaybackend.dto.ResetPasswordDto;
+import org.airway.airwaybackend.exception.EmailIsTakenException;
 import org.airway.airwaybackend.exception.InvalidTokenException;
 import org.airway.airwaybackend.dto.SignupDto;
 import org.airway.airwaybackend.enums.Role;
@@ -191,15 +192,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User saveUser(SignupDto signupDto) {
         if (userRepository.existsByEmail(signupDto.getEmail())) {
-            throw new RuntimeException("Email is already taken, try Logging In or Signup with another email" );
+            throw new EmailIsTakenException("Email is already taken, try Logging In or Signup with another email" );
         }
         User user = new User();
 
         if (!signupDto.getPassword().equals (signupDto.getConfirmPassword())){
-            throw new RuntimeException("Passwords are not the same");
+            throw new PasswordsDontMatchException("Passwords are not the same");
         }
         if (!validatePassword(signupDto.getPassword())) {
-            throw new RuntimeException("Password does not meet the required criteria");
+            throw new PasswordsDontMatchException("Password does not meet the required criteria");
         }
 
         user.setPassword(passwordEncoder.encode(signupDto.getPassword()));
