@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class FlightConfirmDTo {
     private String flightNo;
+    private String className;
     private String departurePortIata;
     private String arrivalPortIata;
     private String departurePortCity;

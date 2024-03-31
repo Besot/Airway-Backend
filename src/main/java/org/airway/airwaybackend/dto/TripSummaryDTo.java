@@ -14,5 +14,7 @@ public class TripSummaryDTo {
     private String bookingRef;
     private String taxAmount;
     private String serviceCharge;
+    private String surCharge;
+    private String baseFare;
     private String totalFare;
 }

@@ -179,7 +179,7 @@ public class BookingServiceImpl implements BookingService {
             savedBooking = bookingRepository.save(booking);
             bookingConfirmationMails(request, savedBooking.getBookingReferenceCode());
             String token = generateTokenForBookingReference(savedBooking.getBookingReferenceCode());
-            return "booking successful"+token;
+            return "booking successful:"+token;
         } catch (ClassNotFoundException ex) {
             return "Class not available";
         } catch (SeatListNotFoundException ex) {
@@ -473,11 +473,15 @@ public class BookingServiceImpl implements BookingService {
             flightConfirmDTo.setDepartureDate(String.valueOf(bookingFlight.getFlight().getDepartureDate()));
             flightConfirmDTo.setFlightNo(bookingFlight.getFlight().getFlightNo());
             flightConfirmDTo.setDeparturePortCity(bookingFlight.getFlight().getDeparturePort().getCity());
+            flightConfirmDTo.setArrivalPortCity(bookingFlight.getFlight().getArrivalPort().getCity());
+            flightConfirmDTo.setClassName(bookingFlight.getClasses().getClassName());
             flightConfirmDTos.add(flightConfirmDTo);
         }
         tripSummaryDTo.setFlightDetails(flightConfirmDTos);
         tripSummaryDTo.setBookingRef(booking.getBookingReferenceCode());
         tripSummaryDTo.setServiceCharge(String.valueOf(booking.getServiceCharge()));
+        tripSummaryDTo.setSurCharge(String.valueOf(booking.getSurchargeFee()));
+        tripSummaryDTo.setBaseFare(String.valueOf(booking.getBaseFare()));
         tripSummaryDTo.setTaxAmount(String.valueOf(booking.getTaxFee()));
         tripSummaryDTo.setTotalFare(String.valueOf(booking.getTotalFare()));
         return tripSummaryDTo;
