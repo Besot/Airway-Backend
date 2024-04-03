@@ -2,6 +2,7 @@ package org.airway.airwaybackend.serviceImpl;
 
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.model.Booking;
 import org.airway.airwaybackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,4 +51,19 @@ public class EmailServiceImpl  {
                 "Password Reset Link",
                 "Please click on the link below to reset your password: " + url);
     }
+
+    public void sendBookingConfirmationMail(Booking booking, String token, HttpServletRequest request) {
+        String url = "http://" +
+                request.getServerName() +
+                ":" +
+                "5173" +
+                request.getContextPath() + "/booking-confirmation/" + token;
+        this.sendMail(
+                booking.getPassengerContactEmail(),
+                "Booking Confirmation Link",
+                "Please click on the link to confirm booking: " + url
+        );
+    }
+
+
 }

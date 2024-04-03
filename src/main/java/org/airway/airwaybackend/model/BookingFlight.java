@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -21,7 +22,6 @@ public class BookingFlight {
     @ManyToOne
     @JoinColumn(name = "flight_no")
     private Flight flight;
-    @JsonIgnore
     @OneToOne
     private PNR pnr;
 
@@ -36,4 +36,12 @@ public class BookingFlight {
 @JsonIgnore
     @ManyToOne
     private Booking booking;
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hash(id);
+        return result;
+    }
 }

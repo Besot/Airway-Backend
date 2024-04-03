@@ -1,7 +1,7 @@
 package org.airway.airwaybackend.service;
 
-import org.airway.airwaybackend.dto.BookingEditingDto;
-import org.airway.airwaybackend.dto.BookingRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.exception.ClassNotFoundException;
 import org.airway.airwaybackend.exception.UnauthorizedAccessException;
 import org.airway.airwaybackend.model.BookingFlight;
@@ -25,7 +25,7 @@ import java.util.function.Function;
 public interface BookingService {
     Page<Booking> getAllBookings(int pageNo, int pageSize);
     int getTotalNumberOfBookings();
-    String bookFlight(BookingRequestDto bookingRequestDto);
+
     BigDecimal calculateFare(BigDecimal fare, int passenger);
     BigDecimal getALLtotalFare (List<BookingFlight> flights);
     String generateBookingReferenceNumber (Set<String> usedNumber);
@@ -35,4 +35,9 @@ public interface BookingService {
     BigDecimal calculateTotal(List<BookingFlight> flights, Function<BookingFlight, BigDecimal> propertyExtractor);
 
     String editBookingById(Long id, BookingEditingDto bookingEditingDto) throws UnauthorizedAccessException, ClassNotFoundException;
+    BookingConfirmationDto confirmBooking(String token);
+    String bookFlight(BookingRequestDto bookingRequestDto, HttpServletRequest request);
+
+    TripSummaryDTo getTripSummary(String token);
+
 }
