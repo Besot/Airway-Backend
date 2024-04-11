@@ -444,14 +444,14 @@ public class FlightServiceImpl implements FlightService {
     }
     @Override
     public String confirmFlight(Long Id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
-
-        if (!user.getUserRole().equals(Role.ADMIN)) {
-            throw new UnauthorizedUserException("Admin role required to confirm flight");
-        }
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        User user = userRepository.findByEmail(username)
+//                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
+//
+//        if (!user.getUserRole().equals(Role.ADMIN)) {
+//            throw new UnauthorizedUserException("Admin role required to confirm flight");
+//        }
 
         Flight flight = flightRepository.findById(Id)
                 .orElseThrow(() -> new FlightNotFoundException("Flight not found"));

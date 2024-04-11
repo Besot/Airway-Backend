@@ -17,7 +17,7 @@ public class Ticket {
     private Long id;
     @JsonIgnore
     @ManyToOne
-    private Flight flight;
+    private BookingFlight bookingFlight;
     @JsonIgnore
     @ManyToOne
     private Passenger passenger;

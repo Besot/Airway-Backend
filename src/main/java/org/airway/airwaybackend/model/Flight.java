@@ -12,6 +12,7 @@ import org.airway.airwaybackend.enums.FlightStatus;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +20,6 @@ import java.util.List;
 @Entity
 @Builder
 public class Flight {
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +38,9 @@ public class Flight {
     private Airport arrivalPort;
     @ManyToOne
     private Airport departurePort;
-    @OneToMany(mappedBy = "flight")
+//    @JsonIgnore
+//    check
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.REMOVE)
     private List<Classes> classes;
     private int totalSeat;
     private int availableSeat;
@@ -52,4 +54,12 @@ public class Flight {
             inverseJoinColumns = @JoinColumn(name = "passenger_id")
     )
     private List<Passenger> passengers;
+
+//    @Override
+//    public int hashCode() {
+//        final int prime = 31;
+//        int result = 1;
+//        result = prime * result + Objects.hash(id);
+//        return result;
+//    }
 }

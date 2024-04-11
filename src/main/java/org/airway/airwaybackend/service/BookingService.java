@@ -23,9 +23,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 public interface BookingService {
-    Page<Booking> getAllBookings(int pageNo, int pageSize);
     int getTotalNumberOfBookings();
-
+     String cancelBooking(Long id);
     BigDecimal calculateFare(BigDecimal fare, int passenger);
     BigDecimal getALLtotalFare (List<BookingFlight> flights);
     String generateBookingReferenceNumber (Set<String> usedNumber);
@@ -33,9 +32,11 @@ public interface BookingService {
     String calculateBaggageAllowance(String weightString, double factor);
     String calculateAllBaggageAllowances(List<BookingFlight> flights, Function<BookingFlight, String> propertyExtractor);
     BigDecimal calculateTotal(List<BookingFlight> flights, Function<BookingFlight, BigDecimal> propertyExtractor);
+     Page<Booking> getAllBookings(int pageNo, int pageSize, String sortParam);
 
     String editBookingById(Long id, BookingEditingDto bookingEditingDto) throws UnauthorizedAccessException, ClassNotFoundException;
     BookingConfirmationDto confirmBooking(String token);
+    TicketConfirmationDto confirmTicket(String token);
     String bookFlight(BookingRequestDto bookingRequestDto, HttpServletRequest request);
 
     TripSummaryDTo getTripSummary(String token);

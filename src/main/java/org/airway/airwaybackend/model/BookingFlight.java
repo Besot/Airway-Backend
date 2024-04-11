@@ -33,7 +33,7 @@ public class BookingFlight {
     private BigDecimal serviceCharge;
     private BigDecimal baseFare;
     private BigDecimal totalFare;
-@JsonIgnore
+    @JsonIgnore
     @ManyToOne
     private Booking booking;
 

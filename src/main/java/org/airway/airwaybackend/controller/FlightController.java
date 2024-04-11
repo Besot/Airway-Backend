@@ -101,7 +101,7 @@ public class FlightController {
     @GetMapping("/fetch-all-flights")
     public ResponseEntity<Page<Flight>> getAllFlights(
             @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "5") int pageSize
+            @RequestParam(defaultValue = "10") int pageSize
     ) {
 
         return new ResponseEntity<>(flightService.getAllFlights(pageNo, pageSize), HttpStatus.OK);
@@ -113,7 +113,6 @@ public class FlightController {
     }
 
     @PutMapping("/update-flight/{flightId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateFlight(@PathVariable Long flightId, @RequestBody UpdateFlightDto updateFlightDto) {
         try {
             String response = flightService.updateFlight(flightId, updateFlightDto);
@@ -131,5 +130,6 @@ public class FlightController {
     public ResponseEntity<FlightSearchDto> getFlightDetails(@PathVariable Long Id) {
         return new ResponseEntity<>(flightService.getFlightDetails(Id), HttpStatus.OK);
     }
+
 }
 

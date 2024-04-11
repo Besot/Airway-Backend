@@ -14,9 +14,11 @@ public class SeatList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Seat seat;
     private String seatLabel;
+    @JsonIgnore
     @ManyToOne
     private Passenger assignedPerson;
     private Boolean occupied;

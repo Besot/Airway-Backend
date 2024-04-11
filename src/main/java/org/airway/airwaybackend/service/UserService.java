@@ -1,13 +1,9 @@
 package org.airway.airwaybackend.service;
 
-import org.airway.airwaybackend.dto.ChangePasswordDto;
-import org.airway.airwaybackend.dto.LoginDto;
+import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.model.User;
 import jakarta.servlet.http.HttpServletRequest;
-import org.airway.airwaybackend.dto.EmailSenderDto;
 import org.airway.airwaybackend.dto.LoginDto;
-import org.airway.airwaybackend.dto.ResetPasswordDto;
-import org.airway.airwaybackend.dto.SignupDto;
 import org.airway.airwaybackend.model.User;
 import org.springframework.http.ResponseEntity;
 
@@ -21,5 +17,9 @@ public interface UserService {
     User saveUser(SignupDto signupDto);
     String changeUserPassword(ChangePasswordDto passwordDto);
     void saveVerificationTokenForUser(User user, String token);
+    String logoutUser(HttpServletRequest request);
+    User editUser(UserDto userEditDto, Long userId);
+    Optional<User> findUserById(Long userId);
+
 
 }
