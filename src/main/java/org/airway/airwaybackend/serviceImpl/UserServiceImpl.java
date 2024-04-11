@@ -1,17 +1,11 @@
 package org.airway.airwaybackend.serviceImpl;
 
 
-import org.airway.airwaybackend.dto.ChangePasswordDto;
+import lombok.extern.slf4j.Slf4j;
+import org.airway.airwaybackend.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.airway.airwaybackend.dto.EmailSenderDto;
-import org.airway.airwaybackend.dto.LoginDto;
-import org.airway.airwaybackend.dto.ResetPasswordDto;
-import org.airway.airwaybackend.exception.EmailIsTakenException;
-import org.airway.airwaybackend.exception.InvalidTokenException;
-import org.airway.airwaybackend.dto.SignupDto;
+import org.airway.airwaybackend.exception.*;
 import org.airway.airwaybackend.enums.Role;
-import org.airway.airwaybackend.exception.PasswordsDontMatchException;
-import org.airway.airwaybackend.exception.UserNotVerifiedException;
 import org.airway.airwaybackend.model.User;
 import org.airway.airwaybackend.model.PasswordResetToken;
 import org.airway.airwaybackend.model.User;
@@ -24,6 +18,7 @@ import org.airway.airwaybackend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,6 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
@@ -263,7 +259,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public String generateMemberShip (String prefix) {
         Random random = new Random();
-        int suffixLength = 4;
+        int suffixLength = 6;
         StringBuilder suffixBuilder = new StringBuilder();
         for (int i = 0; i < suffixLength; i++) {
             suffixBuilder.append(random.nextInt(10));
@@ -271,4 +267,43 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return prefix + suffixBuilder.toString();
     }
 
+    @Override
+    public String logoutUser(HttpServletRequest request) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+            SecurityContextHolder.clearContext();
+            request.getSession().invalidate();
+            return "User logged out Successfully";
+    }
+
+    @Override
+    public User editUser(UserDto userEditDto, Long userId) {
+        Long loggedInUserId = getUserIdFromAuthenticationContext();
+        log.debug("Editing user with ID: {}", loggedInUserId);
+
+        User userMakingEdit = this.userRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new UserNotFoundException("User with ID: "+loggedInUserId+ " Not Found"));
+
+        if (!loggedInUserId.equals(userId)) {
+            throw new UserNotEligibleException("You are not eligible to edit this user");
+        }
+
+        // Update user's information
+        userMakingEdit.setFirstName(userEditDto.getFirstName());
+        userMakingEdit.setLastName(userEditDto.getLastName());
+        userMakingEdit.setCountry(userEditDto.getCountry());
+        userMakingEdit.setPhoneNumber(userEditDto.getPhoneNumber());
+        userMakingEdit.setGender(userEditDto.getGender());
+        userMakingEdit.setDateOfBirth(userEditDto.getDateOfBirth());
+        return userRepository.save(userMakingEdit);
+    }
+
+    private Long getUserIdFromAuthenticationContext() {
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return loggedInUser.getId();
+    }
+
+    @Override
+    public Optional<User> findUserById(Long userId) {
+        return userRepository.findById(userId);
+    }
 }

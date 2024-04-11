@@ -27,7 +27,8 @@ public class Classes {
     private BigDecimal totalFare;
     @OneToMany
     private List<PNR> pnrList;
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Seat seat;
     @JsonIgnore
     @ManyToOne

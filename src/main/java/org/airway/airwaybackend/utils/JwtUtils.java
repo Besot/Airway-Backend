@@ -62,6 +62,7 @@ public class JwtUtils {
     public Function<UserDetails, String> createJwt = userDetails -> {
         User user = (User) userDetails;
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getId());
         claims.put("role", user.getUserRole().name());
         claims.put("firstName", user.getFirstName());
         claims.put("lastName", user.getLastName());
@@ -72,7 +73,6 @@ public class JwtUtils {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(expirationTime.get())
                 .compact();
-
     };
 
 

@@ -28,7 +28,7 @@ public class Seat {
     private int availableSeat;
     private int noOfOccupiedSeats;
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<SeatList> seatLists;
 
 }

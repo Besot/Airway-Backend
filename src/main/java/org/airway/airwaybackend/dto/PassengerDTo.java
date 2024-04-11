@@ -26,6 +26,8 @@ public class PassengerDTo {
     private String passengerEmail;
     private String title;
     private String Nationality;
+    private String membership;
+    private LocalDate created;
     private String phoneNumber;
     @NotEmpty(message = "Role cannot be empty")
     @Enumerated(EnumType.STRING)

@@ -5,14 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.List;
-@ControllerAdvice
+@RestControllerAdvice
 public class DefaultExceptionHandler {
     @ExceptionHandler(UserNotVerifiedException.class)
     public ResponseEntity<ApiError> handleUserNotVerifiedException(
             UserNotVerifiedException e, HttpServletRequest request) {
+        return buildErrorResponse(request, HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotEligibleException.class)
+    public ResponseEntity<ApiError> handleUserNotEligibleException(
+            UserNotEligibleException e, HttpServletRequest request) {
         return buildErrorResponse(request, HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
@@ -31,6 +38,15 @@ public class DefaultExceptionHandler {
             UserNotVerifiedException e, HttpServletRequest request) {
         return buildErrorResponse(request, HttpStatus.NOT_FOUND, e.getMessage());
     }
+
+
+    @ExceptionHandler(PassengerNotFoundException.class)
+    public ResponseEntity<ApiError> PassengerNotFoundException(
+            UserNotVerifiedException e, HttpServletRequest request) {
+        return buildErrorResponse(request, HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+
 
     private ResponseEntity<ApiError> buildErrorResponse(
             HttpServletRequest request, HttpStatus status, String message) {

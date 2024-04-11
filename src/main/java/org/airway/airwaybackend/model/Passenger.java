@@ -30,7 +30,7 @@ public class Passenger {
     private String nationality;
     private String phoneNumber;
     @OneToMany
-    private List<Ticket> ticket;
+    private List<Ticket> tickets;
     private String PSN;
     @Enumerated(EnumType.STRING)
     private Category category;

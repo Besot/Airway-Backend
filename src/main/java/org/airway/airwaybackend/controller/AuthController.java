@@ -39,7 +39,7 @@ public class AuthController {
         if (result.equalsIgnoreCase("valid")){
             return new ResponseEntity<>( "User Verified Successfully",HttpStatus.OK);
         }
-        return new ResponseEntity<>("User signed up", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("User not Verified", HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -64,6 +64,12 @@ String result = userService.logInUser(loginDto);
     @PostMapping("/reset-password/{token}")
     public ResponseEntity<String> resetPassword(@PathVariable String token, @RequestBody ResetPasswordDto passwordDto) {
         return userService.resetPassword(token, passwordDto);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request){
+        String result = userService.logoutUser(request);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
