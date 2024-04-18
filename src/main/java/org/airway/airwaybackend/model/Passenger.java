@@ -49,6 +49,7 @@ public class Passenger {
     @JsonIgnore
     @ManyToOne
     private Booking bookings;
+    private String bookingReference;
 
     @Override
     public int hashCode() {

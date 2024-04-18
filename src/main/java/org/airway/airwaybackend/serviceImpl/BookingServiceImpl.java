@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.airway.airwaybackend.dto.*;
 import org.airway.airwaybackend.enums.BookingStatus;
 import org.airway.airwaybackend.enums.FlightDirection;
+import org.airway.airwaybackend.enums.FlightStatus;
 import org.airway.airwaybackend.enums.Role;
 import org.airway.airwaybackend.exception.*;
 import org.airway.airwaybackend.exception.ClassNotFoundException;
@@ -143,9 +144,10 @@ public class BookingServiceImpl implements BookingService {
                 BookingFlight bookingFlight = new BookingFlight();
                 Classes classes = classesRepository.findById(bookingFlightDto.getClassId()).orElseThrow(() -> new ClassNotFoundException("classes not found"));
                 if (classes.getSeat().getAvailableSeat() == 0) {
-                    throw new SeatListNotFoundException("no Seat is available");
+                    throw new SeatListNotFoundException("No Seat is available");
                 }
                 Flight flight = classes.getFlight();
+
                 bookingFlight.setFlight(flight);
                 bookingFlight.setBaseFare(calculateFare(classes.getBaseFare(), savedPassengers.size()));
                 bookingFlight.setBaggageAllowance(String.valueOf(calculateBaggageAllowance(classes.getBaggageAllowance(), savedPassengers.size())));
@@ -191,16 +193,21 @@ public class BookingServiceImpl implements BookingService {
             booking.setPassengers(savedPassengers);
 
             savedBooking = bookingRepository.save(booking);
+            for(Passenger passenger : savedPassengers){
+                passenger.setBookingReference(savedBooking.getBookingReferenceCode());
+            }
             bookingConfirmationMails(request, savedBooking.getBookingReferenceCode());
             String token = generateTokenForBookingReference(savedBooking.getBookingReferenceCode());
-            return "booking successful:"+token;
+            return "Booking Successful:"+token;
         } catch (ClassNotFoundException ex) {
             return "Class not available";
         } catch (SeatListNotFoundException ex) {
             return "Seat not Available";
+        } catch (FlightNotFoundException ex) {
+            return "Flight not Available";
         } catch (Exception e) {
             e.printStackTrace();
-            return "error occurred in the process";
+            return "Error occurred in the process";
         }
     }
 
@@ -282,7 +289,7 @@ public class BookingServiceImpl implements BookingService {
 
     public String editBookingById(Long id, BookingEditingDto bookingEditingDto) throws IllegalArgumentException, ClassNotFoundException {
         if (bookingEditingDto == null || bookingEditingDto.getPassengers() == null) {
-            throw new IllegalArgumentException("booking sata is missing");
+            throw new IllegalArgumentException("Booking sata is missing");
         }
         Booking booking = getBookingById(id);
         updateBookingDetail(booking, bookingEditingDto);
@@ -345,7 +352,7 @@ public class BookingServiceImpl implements BookingService {
             Classes classes = classesRepository.findById(bookingFlightDto.getClassId())
                     .orElseThrow(() -> new ClassNotFoundException("Class not Available"));
             if (classes.getSeat().getAvailableSeat() == 0) {
-                throw new SeatListNotFoundException("no Seat is available");
+                throw new SeatListNotFoundException("No Seat is available");
             }
             bookingFlight.setClasses(classes);
             Flight flight = classes.getFlight();
@@ -382,7 +389,7 @@ public class BookingServiceImpl implements BookingService {
     public void TicketConfirmationMails(HttpServletRequest request, String bookingReferenceCode) {
         Booking booking = bookingRepository.findByBookingReferenceCode(bookingReferenceCode).orElseThrow(() -> new RuntimeException("Booking not registered"));
         if (booking == null) {
-            throw new UsernameNotFoundException("Booking with referenceCode " + bookingReferenceCode + " not found");
+            throw new BookingNotFoundException("Booking with referenceCode " + bookingReferenceCode + " not found");
         }
         String token = UUID.randomUUID().toString();
         createBookingConfirmationTokenForBooking(booking, token);
@@ -553,7 +560,7 @@ public class BookingServiceImpl implements BookingService {
     public TripSummaryDTo getTripSummary(String token) throws BookingNotFoundException {
         String bookingRef= returnBookingRef(token);
         if(bookingRef == null || token== null){
-            throw new BookingNotFoundException("token is invalid");
+            throw new BookingNotFoundException("Token is invalid");
         }
         Booking booking = bookingRepository.findByBookingReferenceCode(bookingRef).orElseThrow(()-> new BookingNotFoundException("Booking not found"));
         TripSummaryDTo tripSummaryDTo = new TripSummaryDTo();
@@ -593,22 +600,27 @@ public class BookingServiceImpl implements BookingService {
 
 
     public String cancelBooking(Long id) {
-        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException("not found"));
+        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException("Booking not found"));
+        if (booking.getBookingStatus()==BookingStatus.CANCELLED){
+            throw new BookingNotFoundException("Booking already cancelled");
+        }
         List<Passenger> passengerList = booking.getPassengers();
         for (Passenger passenger : passengerList) {
             List<SeatList> seatLists = passenger.getSeat();
             for(int i = 0; i<seatLists.size(); i++) {
                 SeatList seatList = seatLists.get(i);
                 seatList.getSeat().setAvailableSeat(seatList.getSeat().getAvailableSeat() + 1);
+                seatList.getSeat().setNoOfOccupiedSeats(seatList.getSeat().getNoOfOccupiedSeats() - 1);
                 seatList.setOccupied(false);
                 seatList.setAssignedPerson(null);
                 seatListRepository.save(seatList);
             }
             passenger.setSeat(null);
+            passenger.setTickets(null);
             passengerRepository.save(passenger);
         }
         booking.setBookingStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
-        return "booking cancelled successfully";
+        return "Booking cancelled successfully";
     }
 }

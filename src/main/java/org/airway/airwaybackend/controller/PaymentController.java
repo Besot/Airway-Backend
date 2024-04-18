@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/payment")
-@CrossOrigin(origins = {"http://localhost:5173", "https://39c9-197-210-227-220.ngrok-free.app"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:5173", "https://airway-ng.netlify.app"}, allowCredentials = "true")
 public class PaymentController {
     private final PaymentServiceImpl paymentService;
     @Autowired

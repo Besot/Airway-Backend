@@ -14,6 +14,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
+        config.addAllowedOrigin("https://airway-ng.netlify.app");
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("https://39c9-197-210-227-220.ngrok-free.app");
 

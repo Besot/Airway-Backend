@@ -52,9 +52,10 @@ public class EmailServiceImpl  {
 
     public String applicationUrl(HttpServletRequest request) {
         return "http://" +
-                request.getServerName() +
-                ":" +
-                "5173" +
+                "airway-ng.netlify.app" +
+//                request.getServerName() +
+//                ":" +
+//                "5173" +
                 "/api/v1/auth" +
                 request.getContextPath();
     }
@@ -66,7 +67,7 @@ public class EmailServiceImpl  {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(user.getEmail());
-            helper.setSubject("Password Reset Link");
+            helper.setSubject("Password Reset Email");
 
             String imageHtml = "<div><img style=\"width: 100%; display: inline-block;\" src=\"cid:reset\"></div><br><br>";
 
@@ -98,16 +99,17 @@ public class EmailServiceImpl  {
         String passengerFirstName = passengerContact.getFirstName();
 
         String url = "http://" +
-                request.getServerName() +
-                ":" +
-                "5173" +
+                "airway-ng.netlify.app" +
+//                request.getServerName() +
+//                ":" +
+//                "5173" +
                 request.getContextPath() + "/booking-confirmation/" + token;
 
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(booking.getPassengerContactEmail());
-            helper.setSubject("Booking Confirmation Link");
+            helper.setSubject("Booking Confirmation Email");
 
             String imageHtml = "<div><img style=\"width: 100%; display: inline-block;\" src=\"cid:bookingConfirmation\"></div><br><br>";
 
@@ -137,16 +139,17 @@ public class EmailServiceImpl  {
         String passengerFirstName = passengerContact.getFirstName();
 
         String url = "http://" +
-                request.getServerName() +
-                ":" +
-                "5173" +
+                "airway-ng.netlify.app" +
+//                request.getServerName() +
+//                ":" +
+//                "5173" +
                 request.getContextPath() + "/ticket-confirmation/" + token;
 
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(booking.getPassengerContactEmail());
-            helper.setSubject("Ticketing Confirmation Link");
+            helper.setSubject("Ticketing Confirmation Email");
 
             String imageHtml = "<div><img style=\"width: 100%; display: inline-block;\" src=\"cid:ticketConfirmation\"></div><br><br>";
 
