@@ -82,7 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
         Payment payment = paymentRepository.findByTransactionReference(bookingRef).orElse(null);
         if(Objects.nonNull(payment)){
-            return new ResponseEntity<>("User have already make payment  " , HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("User has already make payment  " , HttpStatus.INTERNAL_SERVER_ERROR);
         }
         double amount = 0;
         amount = booking.getTotalFare().doubleValue()*100;

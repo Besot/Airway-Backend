@@ -43,7 +43,7 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(user.getEmail());
-            helper.setSubject("Verification Token Sent");
+            helper.setSubject("Verification Email");
 
             String imageHtml = "<div><img style=\"width: 100%; display: inline-block;\" src=\"cid:welcomeVerify\"></div><br><br>";
 

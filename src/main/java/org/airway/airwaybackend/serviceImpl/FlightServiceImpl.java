@@ -356,9 +356,9 @@ public class FlightServiceImpl implements FlightService {
         Flight flight = flightRepository.findById(id).orElseThrow(() -> new FlightNotFoundException("Flight is not Found"));
 
 
-        if (!Objects.equals(user.getUsername(), flight.getUser().getUsername())) {
-            throw new UserNotVerifiedException("You can't update this flight");
-        }
+//        if (!Objects.equals(user.getUsername(), flight.getUser().getUsername())) {
+//            throw new UserNotVerifiedException("You can't update this flight");
+//        }
 
 
         if (flightDto.getFlightDirection() != null) {
