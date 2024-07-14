@@ -7,3 +7,8 @@
 /dataSources/
 /dataSources.local.xml
 env.properties
+
+
+
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
